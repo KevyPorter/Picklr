@@ -1,0 +1,16 @@
+[
+{
+  "modid": "Picklr",
+  "name": "Picklr",
+  "description": "Enhancements primarily designed for mc.hypixel.net",
+  "version": "Lambda",
+  "mcversion": "1.7.10",
+  "url": "twemyeez.com",
+  "updateUrl": "",
+  "authors": ["twemyeez"],
+  "credits": "Members of the Hypixel forums for their suggestions, as well as all the people who have helped with testing along the way.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
