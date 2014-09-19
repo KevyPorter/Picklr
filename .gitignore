@@ -44,3 +44,6 @@ eclipse/
 gradle/
 gradlew.bat
 .classpath
+.metadata/
+.project/
+bin/
