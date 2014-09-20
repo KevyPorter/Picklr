@@ -3,6 +3,7 @@ package com.twemyeez.picklr.listener;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.twemyeez.picklr.friends.OnlineListManager;
 import com.twemyeez.picklr.location.ServerLocationUtils;
 import com.twemyeez.picklr.utils.CommonUtils;
 
@@ -26,6 +27,7 @@ public class ChatListener {
 	/*
 	 * This is the event fired when chat is received, and it's what fires the relevant methods based upon the active chat status's.
 	 */
+	
 	@SubscribeEvent
 	public void ClientChatReceivedEvent(ClientChatReceivedEvent event) 
 	{
@@ -43,9 +45,12 @@ public class ChatListener {
 		{
 			//Call the method for dealing with whereami messages in case this is one
 			ServerLocationUtils.relatedChatEventHandler(event);
-			
-			//Now, we will remove this status, because it's served the purpose it was meant to
-			currentStatus.remove(ChatStatus.WHEREAMI);
+		}
+		
+		if(OnlineListManager.isInProgress())
+		{
+			//Call the method for dealing with friend lists
+			OnlineListManager.relatedChatEventHandler(event);
 		}
 	}
 }

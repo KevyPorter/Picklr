@@ -1,9 +1,12 @@
 package com.twemyeez.picklr.utils;
 
+import java.io.IOException;
+
 import com.twemyeez.picklr.Picklr;
 import com.twemyeez.picklr.commands.DebugCommand;
 import com.twemyeez.picklr.commands.RadioToggle;
 import com.twemyeez.picklr.commands.RadioVolume;
+import com.twemyeez.picklr.hud.FriendOnlineHud;
 import com.twemyeez.picklr.listener.ChatListener;
 import com.twemyeez.picklr.location.ServerLocationUtils;
 
@@ -27,10 +30,18 @@ public class CommonUtils {
 		MinecraftForge.EVENT_BUS.register(new CommonEvents());
 		
 		//Register the key bindings class
-		MinecraftForge.EVENT_BUS.register(new KeyBindings());
+		FMLCommonHandler.instance().bus().register(new KeyBindings());
 		
 		//Register the chat event handler
 		MinecraftForge.EVENT_BUS.register(new ChatListener());
+		
+		//Register GUI overlay
+		try {
+			MinecraftForge.EVENT_BUS.register(new FriendOnlineHud(Minecraft.getMinecraft()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//register the /debug command which does session checking
 		ClientCommandHandler.instance.registerCommand(new DebugCommand());

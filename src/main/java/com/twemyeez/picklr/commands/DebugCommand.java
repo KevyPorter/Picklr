@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.twemyeez.picklr.auth.SessionAuth;
+import com.twemyeez.picklr.friends.Friend;
+import com.twemyeez.picklr.friends.OnlineListManager;
 import com.twemyeez.picklr.radio.RadioUtils;
 import com.twemyeez.picklr.utils.CommonUtils;
 
@@ -43,7 +45,15 @@ public class DebugCommand implements ICommand{
 	  @Override
 	  public void processCommand(ICommandSender icommandsender, String[] astring)
 	  {
+		  //Verify their session
 		  CommonUtils.sendFormattedChat(true, SessionAuth.checkTokenValidity(SessionAuth.getToken()), EnumChatFormatting.RED, true);
+		  
+		  //Now work on saved friends
+		  CommonUtils.sendFormattedChat(true, "Detected the following friends:", EnumChatFormatting.RED, true);
+		  for(Friend friend: OnlineListManager.friends)
+		  {
+			  CommonUtils.sendFormattedChat(true, friend.getName()+" is in a "+friend.getStatus(), EnumChatFormatting.BLUE, false);
+		  }
 	  }
 
 	  

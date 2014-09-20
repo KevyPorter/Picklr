@@ -12,7 +12,7 @@ import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 public class KeyBindings {
 	public static KeyBinding friendList = new KeyBinding("Friends list", Keyboard.KEY_F, "PickledChat");
 	
-	public static void register()
+	public KeyBindings()
 	{
 		//Register the friend list key binding
 		ClientRegistry.registerKeyBinding(friendList);

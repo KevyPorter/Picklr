@@ -87,6 +87,9 @@ public class OnlineListManager {
 					//Clear the previous messageBuffer
 					messageBuffer.clear();
 					
+					//Clear the previous friends buffer
+					friends.clear();
+					
 					//Now, we run a timer in a short while to deliver messages stopped while friends were listing
 					Timer timer = new Timer();
 					
@@ -97,12 +100,19 @@ public class OnlineListManager {
 						public void run() {
 							for(IChatComponent message: messageBuffer)
 					    	{
-					    		//Iterate through the messages and resend them
-					    		Minecraft.getMinecraft().thePlayer.addChatMessage(message);
+								//Check it's not one of the page listings
+								if(!message.getUnformattedText().startsWith("--- "))
+								{
+									//Iterate through the messages and resend them
+									Minecraft.getMinecraft().thePlayer.addChatMessage(message);
+								}
 					    	}
 						}
 						
 					}, pagesOfResponse*200);
+					
+					//Schedule the reset timer
+					scheduleResetTimer(pagesOfResponse*200);
 					
 				}
 				catch(Exception e)
@@ -133,7 +143,19 @@ public class OnlineListManager {
 					//This confirms it's from the friend list. Let's check they're not offline
 					if(messageSplit[3].equals("offline") != true)
 					{
-						//
+						//Add the friend object
+						//Note this assumes syntax is "username is in a gamemode game/lobby"
+						
+						String status = "";
+						
+						//Firstly let's get the gamemode. This is done by getting all the words from 4th to the end
+						for(int i = 4; i<messageSplit.length; i++)
+						{
+							status = status+messageSplit[i];
+						}
+						
+						//Now add the object
+						friends.add(new Friend(messageSplit[0], status));
 					}
 					else
 					{
@@ -161,6 +183,27 @@ public class OnlineListManager {
 	
 	private static void saveMessageToBuffer(IChatComponent message) {
 		messageBuffer.add(message);
+	}
+	
+	/*
+	 * This handles scheduling the timer to change ChatStatus, which is done in multiple places. As a result of this
+	 * to avoid code being duplicated, we'll just define it once here.
+	 */
+	private static void scheduleResetTimer(int time)
+	{
+		//Create a timer
+		Timer timer = new Timer();
+		
+		//Schedule the removal of the object
+		timer.schedule(new TimerTask(){
+
+			@Override
+			public void run() {
+				//Remove the chat status
+				ChatListener.currentStatus.remove(ChatStatus.FRIEND_LISTING);
+			}
+			
+		}, time);
 	}
 
 }
