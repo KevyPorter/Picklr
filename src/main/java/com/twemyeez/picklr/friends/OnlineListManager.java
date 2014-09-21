@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.twemyeez.picklr.hud.FriendOnlineHud;
 import com.twemyeez.picklr.listener.ChatListener;
 import com.twemyeez.picklr.listener.ChatListener.ChatStatus;
 import com.twemyeez.picklr.utils.CommonUtils;
@@ -87,6 +88,9 @@ public class OnlineListManager {
 					//Clear the previous messageBuffer
 					messageBuffer.clear();
 					
+					//Reset the hud status
+					FriendOnlineHud.resetStatus();
+					
 					//Clear the previous friends buffer
 					friends.clear();
 					
@@ -155,7 +159,7 @@ public class OnlineListManager {
 						}
 						
 						//Now add the object
-						friends.add(new Friend(messageSplit[0], status));
+						friends.add(new Friend(messageSplit[0], event.message.getFormattedText().split(" ")[0], status));
 					}
 					else
 					{

@@ -1,5 +1,6 @@
 package com.twemyeez.picklr;
 
+import com.twemyeez.picklr.hud.FriendOnlineHud;
 import com.twemyeez.picklr.utils.CommonUtils;
 
 import cpw.mods.fml.common.Mod;

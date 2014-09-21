@@ -34,10 +34,12 @@ public class Friend {
 		
 		private Boolean textureDownloaded = false;
 		private Boolean textureLoaded = false;
+		private String formattedUsername;
 
-	public Friend(final String username, String location)
+	public Friend(final String username, String formattedUsername, String location)
 	{
 		this.username = username;
+		this.formattedUsername = formattedUsername;
 		this.location = location;
 		textureManager = Minecraft.getMinecraft().getTextureManager();
 		
@@ -67,6 +69,11 @@ public class Friend {
 			
 		}).start();
 		 
+	}
+	
+	public String getFormattedUsername()
+	{
+		return formattedUsername;
 	}
 	
 	public String getName()
