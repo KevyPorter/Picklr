@@ -27,7 +27,6 @@ public class ChatListener {
 	/*
 	 * This is the event fired when chat is received, and it's what fires the relevant methods based upon the active chat status's.
 	 */
-	
 	@SubscribeEvent
 	public void ClientChatReceivedEvent(ClientChatReceivedEvent event) 
 	{

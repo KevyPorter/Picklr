@@ -24,6 +24,11 @@ import cpw.mods.fml.common.Mod.EventHandler;
 
 public class CommonUtils {
 	
+	/*
+	 * This class handles miscellaneous methods which are either used often or did not fit elsewhere.
+	 */
+	
+	//This method will register the event handlers for the modification
 	public static void registerHandlers()
 	{
 		//register this class for events
@@ -36,12 +41,7 @@ public class CommonUtils {
 		MinecraftForge.EVENT_BUS.register(new ChatListener());
 		
 		//Register GUI overlay
-		try {
-			MinecraftForge.EVENT_BUS.register(new FriendOnlineHud(Minecraft.getMinecraft()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		MinecraftForge.EVENT_BUS.register(new FriendOnlineHud(Minecraft.getMinecraft()));
 		
 		//register the /debug command which does session checking
 		ClientCommandHandler.instance.registerCommand(new DebugCommand());
@@ -60,8 +60,10 @@ public class CommonUtils {
 	public static Boolean isHypixel()
 	{
 		try{
+			//First, we'll check if they're singleplayer
 			if(!FMLClientHandler.instance().getClient().isSingleplayer())
 			{
+				//This implies they're multiplayer - therefore we will check if their server IP contains Hypixel.net
 				if(FMLClientHandler.instance().getClient().func_147104_D().serverIP.indexOf("hypixel.net") != -1)
 				{
 					return true;
@@ -71,11 +73,20 @@ public class CommonUtils {
 		}
 		catch(Exception e)
 		{
-			//if there has been an exception, return false
+			/* If there has been an exception, return false. Sometimes the obfuscated functions return null, and without
+			 * documentation of them, the easiest way to deal with this is a try...catch.
+			 */
+			e.printStackTrace();
 			return false;
 		}
 	}
 	
+	/*
+	 * This can send a formatted chat, with the optional parameters defining traits
+	 * 		- doPrefix defines whether the chat message will have a prefix of the MODID
+	 * 		- doAlertBars determines whether the message will have, before and after, dashed bars
+	 * 		  across chat for emphasis
+	 */
 	public static void sendFormattedChat(Boolean doPrefix, String message, EnumChatFormatting color, Boolean doAlertBars)
 	{
 		//Forge has a tendency to lose colour between lines. Setting each space to include the colour code too solves this.

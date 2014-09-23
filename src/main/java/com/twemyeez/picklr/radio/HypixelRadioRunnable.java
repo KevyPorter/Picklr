@@ -23,7 +23,6 @@ public class HypixelRadioRunnable  implements Runnable{
 		InputStream inputRaw = null;
 		InputStream bufferedIn = null;
 		
-		
 		try
 		{
 			//this is the stream URL.
@@ -50,44 +49,64 @@ public class HypixelRadioRunnable  implements Runnable{
 		}
 		catch(Exception e)
 		{
+			//Print a stack trace for debugging
 			e.printStackTrace();
 			//if the HTTP request has failed, it'd be best to stop, hence we'll return.
 			return;
 		}
 		
-		System.out.println("Stage 1");
-		
-		
+		//Now, initialise the audio input stream
 	    AudioInputStream inputAudio = null;
 	    
-		try {
-			inputAudio = AudioSystem.getAudioInputStream(icyIs);
-		} catch (Exception e)
+	    //Try to get the audio input stream from the ICY input stream
+		try
 		{
-			
+			inputAudio = AudioSystem.getAudioInputStream(icyIs);
 		}
-	    AudioInputStream decodedAudioInput = null;
-	    AudioFormat baseFormat = inputAudio.getFormat();
-	    AudioFormat decodedFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 
-	                                                                                  baseFormat.getSampleRate(),
-	                                                                                  16,
-	                                                                                  baseFormat.getChannels(),
-	                                                                                  baseFormat.getChannels() * 2,
-	                                                                                  baseFormat.getSampleRate(),
-	                                                                                  false);
-	    decodedAudioInput = AudioSystem.getAudioInputStream(decodedFormat, inputAudio);
-	    System.out.println("Stage 2");
-	    // Play now. 
-	    try {
-			RadioUtils.rawplay(decodedFormat, decodedAudioInput);
-	    } catch (Exception e) {
-	    	System.out.println("ERR 3");
+		catch (Exception e)
+		{
+			//Print a stack trace for debugging
+			e.printStackTrace();
+			//if this has failed, it'd be best to stop, hence we'll return.
+			return;
 		}
-	    System.out.println("Stage 3");
-	    try {
+		
+		//Now deal with the audio decoding
+	    AudioInputStream decodedAudioInputStream = null;
+	    
+	    //Define the base audio format
+	    AudioFormat inputFormat = inputAudio.getFormat();
+	    
+	    //And define a decode format
+	    AudioFormat decodedAudioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 
+	    												inputFormat.getSampleRate(),
+	                                                    16,
+	                                                    inputFormat.getChannels(),
+	                                                    inputFormat.getChannels() * 2,
+	                                                    inputFormat.getSampleRate(),
+	                                                    false);
+	    
+	    //Decode the base audio
+	    decodedAudioInputStream = AudioSystem.getAudioInputStream(decodedAudioFormat, inputAudio);
+
+	    //Attempt to play the decoded audio input stream
+	    try
+	    {
+			RadioUtils.rawplay(decodedAudioFormat, decodedAudioInputStream);
+	    }
+	    catch (Exception e){
+	    	//If there was an exception in playing, print the stack trace
+	    	e.printStackTrace();
+		}
+	    
+	    //Now attempt to close the base audio input
+	    try
+	    {
 	    	inputAudio.close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		}
+	    catch (Exception e)
+	    {
+			//If an exception occured, print a stack trace
 			e.printStackTrace();
 		}
 	    

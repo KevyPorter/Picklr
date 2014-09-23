@@ -1,5 +1,10 @@
 package com.twemyeez.picklr.utils;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+
 import net.minecraft.util.EnumChatFormatting;
 
 import com.twemyeez.picklr.Picklr;
@@ -15,7 +20,7 @@ public class UpdateChecker {
 	 * for a new update to show. However, this is unlikely to be an issue for most users, as very few people leave Minecraft open
 	 * forever.
 	 */
-	private static String cachedNewRelease = Picklr.VERSION+" da";
+	private static String cachedNewRelease = Picklr.VERSION;
 	
 	/*
 	 * Update messages can be annoying, so we only display them once every 5 minutes maximum. Therefore, this is used to store
@@ -41,5 +46,64 @@ public class UpdateChecker {
 		{
 			CommonUtils.sendFormattedChat(true, "It appears the mod is not up to date. Please check the thread for exciting new updates!", EnumChatFormatting.RED, true);
 		}
+	}
+
+	/*
+	 * This method will deal with the async web request to retrieve the latest Picklr Version
+	 */
+	public static void requestLatestVersion() {
+		//Start a new thread to do the web request
+		
+		new Thread(new Runnable(){
+			
+			@Override
+			public void run() {
+				/*
+				 * We run this entire block in a try, because if it fails, it is unlikely any following step will be sucessful
+				 */
+				
+				try
+				{
+					//Define the update URL
+					URL website = new URL("https://twemyeez.com/Picklr/version.txt");
+					
+					//Open a connection to the website
+					URLConnection connection = website.openConnection();
+					connection.setConnectTimeout(1500);
+					connection.setReadTimeout(1500);
+					      
+					//This header eliminates some issues with user agent filtering
+					connection.addRequestProperty("User-Agent", 
+					                "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
+
+					//Read the input
+					BufferedReader input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+					//Make a stringbuilder
+					StringBuilder responseBuilder = new StringBuilder();
+					
+					//Define a string to temporarily hold the input lines
+					String inputLine = null;
+
+					//Build the output from each line of the input
+					while ((inputLine = input.readLine()) != null) 
+					{
+						responseBuilder.append(inputLine);
+					}
+
+					//Close the buffered reader
+					input.close();
+
+					//Save the retrieved version
+					UpdateChecker.cachedNewRelease = responseBuilder.toString();
+				}
+				catch(Exception e)
+				{
+					//The current version has a safe default, so we'll just print a stack trace
+					e.printStackTrace();
+				}
+				
+			}
+		}).start();
 	}
 }

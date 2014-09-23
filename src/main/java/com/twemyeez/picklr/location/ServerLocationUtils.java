@@ -9,11 +9,13 @@ import com.twemyeez.picklr.utils.CommonUtils;
 
 public class ServerLocationUtils {
 	
+
+	//This string stores the current location of the user on the Hypixel Server
+	public static String currentServerName;
+	
 	/*
 	 * This method is used to send /whereami messages
 	 */
-	
-	public static String currentServerName;
 	
 	public static void sendServer()
 	{
@@ -27,6 +29,7 @@ public class ServerLocationUtils {
 		ChatListener.currentStatus.add(ChatStatus.WHEREAMI);
 	}
 	
+	//This method handles setting the server and the API update
 	public static void setServer(String name)
 	{
 		/*
@@ -37,9 +40,11 @@ public class ServerLocationUtils {
 		/*
 		 * TODO: Upload this via the API
 		 */
-		
 	}
 	
+	/*
+	 * This event handler handles any events which may be relevant to the server location context
+	 */
 	public static void relatedChatEventHandler(ClientChatReceivedEvent event)
 	{
 		System.out.println("Passing chat event to server location parser");

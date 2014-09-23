@@ -26,7 +26,7 @@ public class KeyBindings {
 		 * There's been a key input event, so let's check what's been pressed
 		 */
 		
-		//For the online friend list
+		//For the online friend list, if the key is pressed, we run the friend list function
 		if(friendList.isPressed())
 		{
 			OnlineListManager.runFriendList();

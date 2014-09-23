@@ -20,111 +20,152 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
 
 public class Friend {
+	/*
+	 * This object represents a friend, and contains data on their skin, location, and username
+	 */
 	
-
+	//The username of the friend
 	private String username;
+	
+	//Username of the friend with any formatting from the friends list, such as rank colour
+	private String formattedUsername;
+	
+	//The server location of the friend
 	private String location;
+	
+	//The file where their skin is stored
 	private File skin;
 	  
-	private File file;
-		private BufferedImage image;
-		private DynamicTexture previewTexture;
-		private ResourceLocation resourceLocation;
-		private TextureManager textureManager;
+	//The image where their skin is stored
+	private BufferedImage image;
+	//The dynamic texture for their skin
+	private DynamicTexture skinTexture;
+	//The resource location for the skin
+	private ResourceLocation skinResourceLocation;
+	//The texture manager
+	private TextureManager skinTextureManager;
 		
-		private Boolean textureDownloaded = false;
-		private Boolean textureLoaded = false;
-		private String formattedUsername;
+	//This boolean indicates whether the skin has finished downloading
+	private Boolean textureDownloaded = false;
+	//This boolean indicates whether the texture is loaded, or we have to load it
+	private Boolean textureLoaded = false;
 
+	/*
+	 * Friend constructor
+	 */
 	public Friend(final String username, String formattedUsername, String location)
 	{
-		this.username = username;
-		this.formattedUsername = formattedUsername;
-		this.location = location;
-		textureManager = Minecraft.getMinecraft().getTextureManager();
+		//Set the various data parameters
 		
+		//Set username
+		this.username = username;
+		//Save the formatted username
+		this.formattedUsername = formattedUsername;
+		//Save the location of the user
+		this.location = location;
+		
+		//Get the texture manager for rendering
+		skinTextureManager = Minecraft.getMinecraft().getTextureManager();
+		
+		//Start a thread to download the skin
 		new Thread(new Runnable(){
 
 			@Override
 			public void run() {
-				try {
+				try
+				{
+					//Create a temporary file for the username
 					skin = File.createTempFile(username, ".png");
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			    try {
+					//Download the head preview
 					FileUtils.copyURLToFile(new URL("https://www.twemyeez.com/Picklr/skin.php?u="+username+"&s=80"), skin);
-				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					//Indicate the texture is now downloaded
+					textureDownloaded = true;
+				}
+				catch (Exception e)
+				{
+					//If this fails, print a stack trace for debugging
 					e.printStackTrace();
 				}
-			    
-			    textureDownloaded = true;
-				
 			}
 			
 		}).start();
 		 
 	}
 	
+	//Get the formatted username associated with the object
 	public String getFormattedUsername()
 	{
 		return formattedUsername;
 	}
 	
+	//Get the username associated
 	public String getName()
 	{
 		return username;
 	}
 
+	//Get the location/status
 	public String getStatus()
 	{
 		return location;
 	}
 	
+	//Returns true if the texture is loaded, and false if now
 	public Boolean isTextureLoaded()
 	{
 		return textureDownloaded;
 	}
-	
-	public boolean loadPreview()
+
+	//Draw the head of the user
+	public void drawHead(int headX, int headY, int headWidth, int headHeight)
 	{
-		try {
-			image = ImageIO.read(skin);
-			previewTexture = new DynamicTexture(image);
-			resourceLocation = textureManager.getDynamicTextureLocation("preview", previewTexture);
-			textureLoaded = true;
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
-		
-	}
-	
-	public void drawImage(int xPos, int yPos, int width, int height)
-	{
+		//If the texture isn't yet loaded, load it
 		if(!textureLoaded)
 		{
-			loadPreview();
+			try
+			{
+				//Read the skin file as an image
+				image = ImageIO.read(skin);
+				
+				//Assign it to the dynamic texture
+				skinTexture = new DynamicTexture(image);
+				
+				//Set the resource location
+				skinResourceLocation = skinTextureManager.getDynamicTextureLocation("skinTexture", skinTexture);
+				
+				//Indicate we've now loaded the skin, so we don't reload it in future
+				textureLoaded = true;
+			}
+			catch (IOException e)
+			{
+				//If an error occurred, we can print the stack trace for debugging
+				e.printStackTrace();
+			}
 		}
-		previewTexture.updateDynamicTexture();
+		
+		//Update the dynamic texture
+		skinTexture.updateDynamicTexture();
+		
+		//Get the tessellator
 		Tessellator tessellator = Tessellator.instance;
-		textureManager.bindTexture(resourceLocation);
+		
+		//Bind the skin texture
+		skinTextureManager.bindTexture(skinResourceLocation);
+		
+		//Enable OpenGL blend functions
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		
+		//Start drawing the quadrilateral
 		tessellator.startDrawingQuads();
 		
-		tessellator.addVertexWithUV(xPos        , yPos + height, 0, 0.0, 1.0);
-		tessellator.addVertexWithUV(xPos + width, yPos + height, 0, 1.0, 1.0);
-		tessellator.addVertexWithUV(xPos + width, yPos         , 0, 1.0, 0.0);
-		tessellator.addVertexWithUV(xPos        , yPos         , 0, 0.0, 0.0);
+		//Add the vertices
+		tessellator.addVertexWithUV(headX, headY + headHeight, 0, 0.0, 1.0);
+		tessellator.addVertexWithUV(headX + headWidth, headY + headHeight, 0, 1.0, 1.0);
+		tessellator.addVertexWithUV(headX + headWidth, headY, 0, 1.0, 0.0);
+		tessellator.addVertexWithUV(headX, headY, 0, 0.0, 0.0);
 		
-		
+		//Draw the image
 		tessellator.draw();
 	}
 

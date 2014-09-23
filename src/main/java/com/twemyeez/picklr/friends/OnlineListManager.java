@@ -185,6 +185,7 @@ public class OnlineListManager {
 		}
 	}
 	
+	//This adds a message to the buffer, to be shown again after completion of the friend listing
 	private static void saveMessageToBuffer(IChatComponent message) {
 		messageBuffer.add(message);
 	}

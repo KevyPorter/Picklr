@@ -20,59 +20,86 @@ import org.apache.http.message.BasicNameValuePair;
 import net.minecraft.client.Minecraft;
 
 public class SessionAuth {
+	/*
+	 * This class is a work in progress and is not currently used anywhere. The aim of this class is going to be to handle
+	 * authentication with the Picklr API when it is released, because the PickledChat API was somewhat flawed in this respect.
+	 */
 	
+	/*
+	 * This method returns the Minecraft session token
+	 */
 	public static String getToken()
 	{
 		return Minecraft.getMinecraft().getSession().getToken();
 	}
 	
+	/*
+	 * This is a debug method to check that we can validate the string returned from the getToken() method. It returns the token if the
+	 * request was not successful, but it will return "Session token verified" if it was successful.
+	 */
 	public static String checkTokenValidity(String token)
 	{
 		/* https://authserver.mojang.com/validate
-		 * with format 	{
-		 *					"accessToken": "valid accessToken",
+		 * 
+		 * with JSON payload 	{
+		 *					"accessToken": "token",
 		 *  			}
 		 */
 	
+		/*
+		 * We use a try...catch structure to handle the various ways in which this can fail easily
+		 */
 	    try {
+	    	//Define the URL to which we will request
 	    	URL url = new URL("https://authserver.mojang.com/validate");
 
+	    	//Define the data payload
 	        String payload="{\"accessToken\":\""+token+"\"}";
 	        
-	    	 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+	        //Open a HTTP connection to the URL
+	    	HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-	    	 connection.setDoInput(true);
-	         connection.setDoOutput(true);
+	    	//Configure the connection
+	    	connection.setDoOutput(true);
+	    	connection.setDoInput(true);
+	        
+	        //Set the request properties to allow the data to be passed
+	        connection.setRequestMethod("POST");
+	        connection.setRequestProperty("Accept", "application/json");
+	        connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 	         
-	         connection.setRequestMethod("POST");
-	         connection.setRequestProperty("Accept", "application/json");
+	        //Now create the output writer
+	        OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
 	         
-	         connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+	        //Write the payload
+	        writer.write(payload);
 	         
-	         OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
-	         
-	         writer.write(payload);
-	         
-	         writer.close();
+	        //Close the writer to clean up resources
+	        writer.close();
 	      
-	     
-	         BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-	         String output =  br.readLine();
-	         if(output == null)
-	         {
-	        	 return "Session token verified";
-	         }
-	         else
-	         {
-	        	 return output;
-	         }
+	        //Now read the response to a string
+	        String output = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
+	        
+	        //A null output implies that the request was sucessful
+	        if(output == null)
+	        {
+	        	return "Session token verified";
+	        }
+	        else
+	        {
+	        	//Otherwise, just return the token to allow easier debugging
+	        	return output;
+	        }
 	      
 	  
-	    } catch (IOException e) {
-	      e.printStackTrace();
-	      
 	    }
-		return token;
+	    catch (IOException e)
+	    {
+	    	//Print the stack trace for any exceptions and return a short explanatory string
+	    	e.printStackTrace();
+			return "An exception occured";
+	    }
+
 	    
 	}
 }
