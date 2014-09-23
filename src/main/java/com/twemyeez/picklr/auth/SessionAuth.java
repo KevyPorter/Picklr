@@ -47,7 +47,7 @@ public class SessionAuth {
 		 */
 	
 		/*
-		 * We use a try...catch structure to handle the various ways in which this can fail easily
+		 * We use a try...catch structure to easily handle the various ways in which this can fail
 		 */
 	    try {
 	    	//Define the URL to which we will request
