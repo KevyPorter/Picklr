@@ -1,7 +1,9 @@
 Picklr
 ======
 
-*This is a work in progress and may behave unexpectedly. Please don't use this for now, and instead use PickledChat from http://hypixel.net/threads/114069/
+*This is a work in progress and may behave unexpectedly. Please don't use this for now, and instead use PickledChat from http://hypixel.net/threads/114069/ *
+
+Please don't submit pull requests yet, as the mod is not publicly released.
 
 This is a client modification providing utilities for users of the Hypixel Minecraft server. It's the successor to PickledChat, which has had about 300 downloads of the most recent version as of the time of writing.
 
