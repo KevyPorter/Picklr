@@ -56,6 +56,9 @@ public class FriendOnlineHud extends Gui{
 	
 	//This is the friend list buffer
 	private static List<Friend> friendBuffer = new ArrayList<Friend>();
+	
+	//This is the increment timer
+	private static Timer incrementTimer = new Timer();
 	  
 	//In the constructor, we pass the Minecraft object
 	 public FriendOnlineHud(Minecraft mc)
@@ -248,15 +251,20 @@ public class FriendOnlineHud extends Gui{
 	  //This handles the starting of the increment timer
 	  public static void startTimer() {
 		  //Register and schedule the timertask
-		  Timer timer = new Timer();
-		  timer.schedule(new TimerTask(){
+		  incrementTimer.schedule(new TimerTask(){
 
 			  @Override
 			  public void run() {
 				  //Check whether the friend list has started
 				  if(FriendOnlineHud.startedList)
 				  {
-					  //If it has, increment the current position
+					  if(!hudEnabled)
+					  {
+						  //Cancel this as it is now not needed
+						  this.cancel();
+					  }
+					  
+					  //If list has started, increment the current position
 					  FriendOnlineHud.currentI = FriendOnlineHud.currentI+1;
 					  
 					  //If we reach the last player, reset status
@@ -264,12 +272,6 @@ public class FriendOnlineHud extends Gui{
 					  {
 						  //Reset status
 						  FriendOnlineHud.resetStatus();
-					  }
-					  
-					  if(!hudEnabled)
-					  {
-						  //Cancel this as it is now not needed
-						  this.cancel();
 					  }
 				  }
 				  else

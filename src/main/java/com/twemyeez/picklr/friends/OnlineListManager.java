@@ -89,9 +89,6 @@ public class OnlineListManager {
 					//Clear the previous messageBuffer
 					messageBuffer.clear();
 					
-					//Reset the hud status
-					FriendOnlineHud.resetStatus();
-					
 					//Clear the previous friends buffer
 					friends.clear();
 					
