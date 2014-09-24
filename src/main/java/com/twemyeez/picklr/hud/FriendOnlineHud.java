@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
@@ -18,6 +19,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
 import org.lwjgl.opengl.GL11;
+
 
 
 
@@ -96,10 +98,34 @@ public class FriendOnlineHud extends Gui{
 	 //This is used to set the friend buffer to a copy of the other array
 	 public static void setFriendBuffer(List<Friend> targetList)
 	 {
-		 //Clear the buffer
-		 friendBuffer.clear();
-		 //Copy
-		 friendBuffer = new ArrayList<Friend>(targetList);
+		 try
+		 {
+			 //Save the current friend
+			 Friend playerTemoraryBuffer = friendBuffer.get(currentI);
+		 
+			 //Clear the buffer
+			 friendBuffer.clear();
+			 //Copy
+			 friendBuffer = new ArrayList<Friend>(targetList);
+		 
+			 //Now, get the location of this friend in the new buffer
+			 int newIteratorLocation = friendBuffer.indexOf(playerTemoraryBuffer);
+		 
+			 //If it's found, set this as the new iterator value
+			 if(newIteratorLocation != -1)
+			 {
+				 currentI = newIteratorLocation;
+			 }
+		 }
+		 catch (Exception e)
+		 {
+			 //This probably means the list was empty
+			 
+			 //Clear the buffer
+			 friendBuffer.clear();
+			 //Copy
+			 friendBuffer = new ArrayList<Friend>(targetList);
+		 }
 	 }
 	  
 	 //This renders a username at a certain location
@@ -192,10 +218,11 @@ public class FriendOnlineHud extends Gui{
 		  }
 	    
 		  //Now loop through friends
-		  for(Friend friend: friendBuffer)
+		  Iterator<Friend> itr = friendBuffer.iterator();
+		  while(itr.hasNext())
 		  {
 			  //Check if their texture has downloaded
-			  if(!friend.isTextureLoaded())
+			  if(!itr.next().isTextureLoaded())
 			  {
 				  //If their texture isn't loaded, then change the value of ready to false
 				  ready = false;
@@ -222,8 +249,12 @@ public class FriendOnlineHud extends Gui{
 	    	//Set the increment to 0
 	    	int i = 0;
 	    	//Loop through all friends
-	    	for(Friend friend: friendBuffer)
-	    	{
+	    	Iterator<Friend> friendIterator = friendBuffer.iterator();
+	    	//Keep going while there are more
+			while(friendIterator.hasNext())
+			{
+				//Get the next iteration
+				Friend friend = friendIterator.next();
 	    		//Check the position of the friend
 	    		if(i==currentI)
 	    		{
