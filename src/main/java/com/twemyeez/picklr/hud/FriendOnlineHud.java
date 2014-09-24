@@ -250,6 +250,9 @@ public class FriendOnlineHud extends Gui{
 
 	  //This handles the starting of the increment timer
 	  public static void startTimer() {
+		  //Print a debug message
+		  System.out.println("Friend hud increment");
+		  
 		  //Register and schedule the timertask
 		  incrementTimer.schedule(new TimerTask(){
 
@@ -262,13 +265,14 @@ public class FriendOnlineHud extends Gui{
 					  {
 						  //Cancel this as it is now not needed
 						  this.cancel();
+						  return;
 					  }
 					  
 					  //If list has started, increment the current position
 					  FriendOnlineHud.currentI = FriendOnlineHud.currentI+1;
 					  
 					  //If we reach the last player, reset status
-					  if(currentI == friendBuffer.size())
+					  if(currentI >= friendBuffer.size())
 					  {
 						  //Reset status
 						  FriendOnlineHud.resetStatus();
