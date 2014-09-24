@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.twemyeez.picklr.Picklr;
 import com.twemyeez.picklr.hud.FriendOnlineHud;
 import com.twemyeez.picklr.listener.ChatListener;
 import com.twemyeez.picklr.listener.ChatListener.ChatStatus;
@@ -126,6 +127,12 @@ public class OnlineListManager {
 				}
 				
 			}
+			
+			//Cancel if it's meant to be in the background
+			if(ChatListener.currentStatus.contains(ChatListener.ChatStatus.BACKGROUND_FRIEND))
+			{
+				event.setCanceled(true);
+			}
 		}
 		//Otherwise, we're getting the actual friend list
 		else if(ChatListener.currentStatus.contains(ChatListener.ChatStatus.FRIEND_LISTING))
@@ -182,6 +189,12 @@ public class OnlineListManager {
 				//Cancel the message
 				event.setCanceled(true);
 			}
+			
+			//Cancel if it's meant to be in the background
+			if(ChatListener.currentStatus.contains(ChatListener.ChatStatus.BACKGROUND_FRIEND))
+			{
+				event.setCanceled(true);
+			}
 		}
 	}
 	
@@ -196,6 +209,9 @@ public class OnlineListManager {
 	 */
 	private static void scheduleResetTimer(int time)
 	{
+		//Print aa message for debugging
+		System.out.println("End timer for friend list started");
+		
 		//Create a timer
 		Timer timer = new Timer();
 		
@@ -206,9 +222,37 @@ public class OnlineListManager {
 			public void run() {
 				//Remove the chat status
 				ChatListener.currentStatus.remove(ChatStatus.FRIEND_LISTING);
+				
+				//Copy friend list to buffer
+				FriendOnlineHud.setFriendBuffer(friends);
+				
+				//Cancel if it's meant to be in the background
+				if(ChatListener.currentStatus.contains(ChatListener.ChatStatus.BACKGROUND_FRIEND))
+				{
+					ChatListener.currentStatus.remove(ChatListener.ChatStatus.BACKGROUND_FRIEND);
+				}
 			}
 			
 		}, time);
+	}
+
+	public static void sendBackgroundRequest() {
+		//If it's not already in progress
+		if(!isInProgress())
+		{
+				//Add the chat status so we now listen for the page
+				ChatListener.currentStatus.add(ChatStatus.FRIEND_GETTING_PAGE);
+				//Set this to background
+				ChatListener.currentStatus.add(ChatStatus.BACKGROUND_FRIEND);
+				
+				//Send the initial friend list request
+				Minecraft.getMinecraft().thePlayer.sendChatMessage("/f list");
+		}
+		else
+		{
+			//Otherwise, we'll cancel it, and log a debug message
+			System.out.println(Picklr.MODID+" Background Friend Request >> Update cancelled because user action in progress.");
+		}
 	}
 
 }

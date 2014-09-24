@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.twemyeez.picklr.Picklr;
 import com.twemyeez.picklr.commands.DebugCommand;
+import com.twemyeez.picklr.commands.HudToggle;
 import com.twemyeez.picklr.commands.RadioToggle;
 import com.twemyeez.picklr.commands.RadioVolume;
 import com.twemyeez.picklr.hud.FriendOnlineHud;
@@ -51,6 +52,9 @@ public class CommonUtils {
 		
 		//register the /radio command which toggles radio on and off
 		ClientCommandHandler.instance.registerCommand(new RadioToggle());
+		
+		//register the /hud command which toggles friend HUD on and off
+		ClientCommandHandler.instance.registerCommand(new HudToggle());
 	}
 	
 	/*

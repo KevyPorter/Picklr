@@ -16,7 +16,7 @@ public class ChatListener {
 	 * This enum holds the various status's that can be used for chat
 	 */
 	public enum ChatStatus {
-		READY, WHEREAMI, FRIEND_GETTING_PAGE, FRIEND_LISTING, AFK
+		READY, WHEREAMI, FRIEND_GETTING_PAGE, FRIEND_LISTING, AFK, BACKGROUND_FRIEND
 	};
 	
 	/*

@@ -8,6 +8,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,8 +23,12 @@ import org.lwjgl.opengl.GL11;
 
 
 
+
+
+
 import com.twemyeez.picklr.friends.Friend;
 import com.twemyeez.picklr.friends.OnlineListManager;
+import com.twemyeez.picklr.utils.CommonUtils;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
@@ -44,6 +50,12 @@ public class FriendOnlineHud extends Gui{
 
 	//We store a Minecraft object for rendering
 	private Minecraft mc;
+	
+	//This boolean stores whether the friend hud is enabled
+	public static Boolean hudEnabled = false;
+	
+	//This is the friend list buffer
+	private static List<Friend> friendBuffer = new ArrayList<Friend>();
 	  
 	//In the constructor, we pass the Minecraft object
 	 public FriendOnlineHud(Minecraft mc)
@@ -53,6 +65,39 @@ public class FriendOnlineHud extends Gui{
 		 //Set the value of the mc variable
 		 this.mc = mc;   
 	  }
+	 
+	 //This handles safely toggling the HUD
+	 public static void toggleHud()
+	 {
+		 //Check if the hud is already enabled
+		 if(!hudEnabled)
+		 {
+			 //Set the HUD to enabled
+			 hudEnabled = true;
+			 //Send the first data request
+			 OnlineListManager.sendBackgroundRequest();
+		 }
+		 else
+		 {
+			 //It's already enabled, so warn the user
+			 CommonUtils.sendFormattedChat(true, "Friend HUD now disabled", EnumChatFormatting.RED, true);
+			 
+			 //Disable HUD
+			 hudEnabled = false;
+			 
+			 //Clear status
+			 resetStatus();
+		 }
+	 }
+	 
+	 //This is used to set the friend buffer to a copy of the other array
+	 public static void setFriendBuffer(List<Friend> targetList)
+	 {
+		 //Clear the buffer
+		 friendBuffer.clear();
+		 //Copy
+		 friendBuffer = new ArrayList<Friend>(targetList);
+	 }
 	  
 	 //This renders a username at a certain location
 	 public void render(Minecraft minecraft, double d, String username) {
@@ -95,6 +140,17 @@ public class FriendOnlineHud extends Gui{
 		 
 		 //Clear the friends listed
 		 OnlineListManager.friends.clear();
+		 
+		 //Send a relist request if it's enabled
+		 if(FriendOnlineHud.hudEnabled)
+		 {
+			 OnlineListManager.sendBackgroundRequest();
+		 }
+		 else
+		 {
+			 //Otherwise, clear friends
+			 friendBuffer.clear();
+		 }
 	 }
 	    
 	 /*
@@ -115,6 +171,11 @@ public class FriendOnlineHud extends Gui{
 			  return;
 		  }
 	    
+		  //Check if hud enabled
+		  if(!hudEnabled)
+		  {
+			  return;
+		  }
 	    
 		  //First let's check we can draw them by checking the images are loaded
 		  
@@ -122,13 +183,13 @@ public class FriendOnlineHud extends Gui{
 		  Boolean ready = true;
 		  
 		  //If there are no friends, we can't draw them
-		  if(OnlineListManager.friends.size() == 0)
+		  if(friendBuffer.size() == 0)
 		  {
 			  ready=false;
 		  }
 	    
 		  //Now loop through friends
-		  for(Friend friend: OnlineListManager.friends)
+		  for(Friend friend: friendBuffer)
 		  {
 			  //Check if their texture has downloaded
 			  if(!friend.isTextureLoaded())
@@ -158,7 +219,7 @@ public class FriendOnlineHud extends Gui{
 	    	//Set the increment to 0
 	    	int i = 0;
 	    	//Loop through all friends
-	    	for(Friend friend: OnlineListManager.friends)
+	    	for(Friend friend: friendBuffer)
 	    	{
 	    		//Check the position of the friend
 	    		if(i==currentI)
@@ -199,11 +260,15 @@ public class FriendOnlineHud extends Gui{
 					  FriendOnlineHud.currentI = FriendOnlineHud.currentI+1;
 					  
 					  //If we reach the last player, reset status
-					  if(currentI == OnlineListManager.friends.size()-1)
+					  if(currentI == friendBuffer.size())
 					  {
 						  //Reset status
 						  FriendOnlineHud.resetStatus();
-						  //Cancel this task, as it's not needed anymore
+					  }
+					  
+					  if(!hudEnabled)
+					  {
+						  //Cancel this as it is now not needed
 						  this.cancel();
 					  }
 				  }
@@ -214,7 +279,7 @@ public class FriendOnlineHud extends Gui{
 				  }
 			  }
 			  
-		  }, 4*1000, 4*1000);
+		  }, 10*1000, 10*1000);
 	  }   
 	  
 
