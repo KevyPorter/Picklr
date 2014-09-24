@@ -14,24 +14,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javax.imageio.ImageIO;
-
 import org.apache.commons.io.FileUtils;
 import org.lwjgl.opengl.GL11;
-
-
-
-
-
-
-
-
-
 import com.twemyeez.picklr.friends.Friend;
 import com.twemyeez.picklr.friends.OnlineListManager;
 import com.twemyeez.picklr.utils.CommonUtils;
-
+import com.twemyeez.picklr.friends.Friend;
+import com.twemyeez.picklr.friends.OnlineListManager;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
