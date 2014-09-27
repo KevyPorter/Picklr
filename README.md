@@ -27,7 +27,7 @@ Picklr documentation is mostly contained within the source code. However, users 
 API
 ---
 
-Picklr features an extensive API used for certain features. Documentation on this can be found at [the wiki](https://github.com/twemyeez/Picklr/wiki/API-Documentation)
+Picklr features an extensive API used for certain features. Documentation on this can be found on [the wiki](https://github.com/twemyeez/Picklr/wiki/API-Documentation)
 
 
 Bug Reporting
