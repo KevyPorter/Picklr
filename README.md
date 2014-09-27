@@ -7,7 +7,7 @@ Picklr
 
 This is a client modification providing utilities for users of the Hypixel Minecraft server. It's the successor to PickledChat, which has had about 300 downloads of the most recent version as of the time of writing.
 
-This is a total rewrite of PickledChat in order to allow for better expandability - PickledChat was never designed to grow to the size it has, and the fast development has meant that the best way to ensure a sustainable future was to totally rewrite PickledChat.
+This is a total rewrite of PickledChat in order to allow for better expandability - PickledChat was never designed to grow to the size it has, and the fast development pace has meant that the best way to ensure a sustainable future was to totally rewrite PickledChat.
 
 Bearing in mind that, at launch, Picklr contains the same features as PickledChat, it is allowed, as PickledChat was.
 
@@ -27,7 +27,7 @@ Picklr documentation is mostly contained within the source code. However, users 
 API
 ---
 
-Picklr features an extensive API used for certain features. Documentation on this can be found on [the wiki](https://github.com/twemyeez/Picklr/wiki/API-Documentation)
+Picklr features an API used for certain features. Documentation on this can be found on [the wiki](https://github.com/twemyeez/Picklr/wiki/API-Documentation)
 
 
 Bug Reporting
@@ -35,6 +35,9 @@ Bug Reporting
 
 You can post reports on the modification thread, or you can create an issue here on GitHub.
 
+
+Licence
+-------
 
 -------------------------------------------------------------------------------
 The MIT License (MIT)
