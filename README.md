@@ -20,9 +20,14 @@ Picklr can either be built from source or builds can be downloaded from the Hypi
 Documentation
 -------------
 
-PickledChat documentation is mostly contained within the source code. However, users may be interested in viewing the wiki for information pertaining to:
+Picklr documentation is mostly contained within the source code. However, users may be interested in viewing the wiki for information pertaining to:
 - The config file
-- The various online features of the modification
+- The various online features of the modification (see API below)
+
+API
+---
+
+Picklr features an extensive API used for certain features. Documentation on this can be found at [the wiki](https://github.com/twemyeez/Picklr/wiki/API-Documentation)
 
 
 Bug Reporting
