@@ -42,6 +42,13 @@ public class CommonEvents {
 	    		  
 	    		  //Save the current time, to ensure we don't show the update dialogue too often.
 	    		  lastGuiShow = System.currentTimeMillis();
+	    		  
+	    		  //Check if their authentication token is valid
+	    		  if(!SessionAuth.checkTokenValid())
+	    		  {
+	    			  //If it is not, request a new one
+	    			  SessionAuth.startTokenRequest();
+	    		  }
 	    	  }
 	      }
 	     
