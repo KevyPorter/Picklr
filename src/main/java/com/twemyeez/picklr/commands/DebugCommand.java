@@ -58,8 +58,8 @@ public class DebugCommand implements ICommand{
 	  @Override
 	  public void processCommand(ICommandSender icommandsender, String[] astring)
 	  {
-		  //Verify their session
-		  CommonUtils.sendFormattedChat(true, SessionAuth.checkTokenValidity(SessionAuth.getToken()), EnumChatFormatting.RED, true);
+		  //Tell them the token
+		  CommonUtils.sendFormattedChat(true, "Token: "+SessionAuth.getToken(), EnumChatFormatting.BLUE, true);
 		  
 		  //Now work on displaying saved friends
 		  CommonUtils.sendFormattedChat(true, "Detected the following friends:", EnumChatFormatting.RED, true);

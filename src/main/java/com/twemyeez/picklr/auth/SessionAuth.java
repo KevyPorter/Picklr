@@ -17,7 +17,14 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.exceptions.AuthenticationUnavailableException;
+import com.twemyeez.picklr.listener.ChatListener;
+import com.twemyeez.picklr.listener.ChatListener.ChatStatus;
+
+import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
 public class SessionAuth {
 	/*
@@ -26,80 +33,100 @@ public class SessionAuth {
 	 */
 	
 	/*
-	 * This method returns the Minecraft session token
+	 * This method returns the Picklr session token
 	 */
-	public static String getToken()
+	
+	//Holds system time in millis of last request start
+	public static Long lastTokenRequestInitialisation = 0L;
+	//Holds system time in millis of last request completion
+	public static Long lastTokenRequestCompletion = 0L;
+	
+	//Holds the most recent token
+	public static String token = "";
+	
+	//This method is used to initialise a token request
+	public static void startTokenRequest()
 	{
-		return Minecraft.getMinecraft().getSession().getToken();
+		//Add the token request status
+		ChatListener.currentStatus.add(ChatStatus.TOKEN_REQUEST);
+		
+		//Start a token request
+		Minecraft.getMinecraft().thePlayer.sendChatMessage("/tell twemyeez Picklr");
+		
+		//Store the start time
+		lastTokenRequestInitialisation = System.currentTimeMillis();
 	}
 	
 	/*
-	 * This is a debug method to check that we can validate the string returned from the getToken() method. It returns the token if the
-	 * request was not successful, but it will return "Session token verified" if it was successful.
+	 * This method is used to check if we've got a token ready for processing or if we should wait
 	 */
-	public static String checkTokenValidity(String token)
-	{
-		/* https://authserver.mojang.com/validate
-		 * 
-		 * with JSON payload 	{
-		 *					"accessToken": "token",
-		 *  			}
-		 */
-	
-		/*
-		 * We use a try...catch structure to easily handle the various ways in which this can fail
-		 */
-	    try {
-	    	//Define the URL to which we will request
-	    	URL url = new URL("https://authserver.mojang.com/validate");
-
-	    	//Define the data payload
-	        String payload="{\"accessToken\":\""+token+"\"}";
-	        
-	        //Open a HTTP connection to the URL
-	    	HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-	    	//Configure the connection
-	    	connection.setDoOutput(true);
-	    	connection.setDoInput(true);
-	        
-	        //Set the request properties to allow the data to be passed
-	        connection.setRequestMethod("POST");
-	        connection.setRequestProperty("Accept", "application/json");
-	        connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-	         
-	        //Now create the output writer
-	        OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
-	         
-	        //Write the payload
-	        writer.write(payload);
-	         
-	        //Close the writer to clean up resources
-	        writer.close();
-	      
-	        //Now read the response to a string
-	        String output = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
-	        
-	        //A null output implies that the request was sucessful
-	        if(output == null)
-	        {
-	        	return "Session token verified";
-	        }
-	        else
-	        {
-	        	//Otherwise, just return the token to allow easier debugging
-	        	return output;
-	        }
-	      
-	  
-	    }
-	    catch (IOException e)
-	    {
-	    	//Print the stack trace for any exceptions and return a short explanatory string
-	    	e.printStackTrace();
-			return "An exception occured";
-	    }
-
-	    
+	public static Boolean checkTokenValid(){
+		//If there is no new token, return false
+		if(token.equals(""))
+		{
+			return false;
+		}
+		
+		//If the last token is older than the last request, then return false as there is a new one pending
+		if(lastTokenRequestInitialisation>lastTokenRequestCompletion)
+		{
+			return false;
+		}
+		
+		//Otherwise return true
+		return true;
 	}
+
+	/*
+	 * This handles chat parsing for when it is required
+	 */
+	public static void relatedChatEventHandler(ClientChatReceivedEvent event) {
+		//We know that the message isn't null
+		String message = event.message.getUnformattedText();
+		//Check if the message is from the correct user
+		if(message.startsWith("From twemyeez:"))
+		{
+			//Get the UUID
+			token = message.split(" ")[2];
+			
+			//Cancel the message
+			event.setCanceled(true);
+			
+			//Set the last message date
+			lastTokenRequestCompletion = System.currentTimeMillis();
+			
+			//Print the message to console
+			System.out.println(message);
+			
+			//Remove the status
+			ChatListener.currentStatus.remove(ChatStatus.TOKEN_REQUEST);
+		}
+		
+		//Check if the message is the request
+		if(message.equals("To twemyeez: Picklr"))
+		{
+			//Cancel the message
+			event.setCanceled(true);
+			
+			//Print the message to console
+			System.out.println(message);
+		}
+						
+	}
+
+	/*
+	 * This method safely gets the authentication token
+	 */
+	public static String getToken() {
+		//Check if the token is valid, if not, request one
+		if(!checkTokenValid())
+		{
+			startTokenRequest();
+		}
+		
+		//Return the token
+		return token;
+	}
+	
+
 }
