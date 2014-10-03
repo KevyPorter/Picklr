@@ -7,6 +7,7 @@ import com.twemyeez.picklr.commands.DebugCommand;
 import com.twemyeez.picklr.commands.HudToggle;
 import com.twemyeez.picklr.commands.RadioToggle;
 import com.twemyeez.picklr.commands.RadioVolume;
+import com.twemyeez.picklr.config.ConfigurationHandler;
 import com.twemyeez.picklr.hud.FriendOnlineHud;
 import com.twemyeez.picklr.listener.ChatListener;
 import com.twemyeez.picklr.location.ServerLocationUtils;
@@ -55,6 +56,9 @@ public class CommonUtils {
 		
 		//register the /hud command which toggles friend HUD on and off
 		ClientCommandHandler.instance.registerCommand(new HudToggle());
+		
+		//Register the handler for configuration changes
+		FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
 	}
 	
 	/*
@@ -80,7 +84,6 @@ public class CommonUtils {
 			/* If there has been an exception, return false. Sometimes the obfuscated functions return null, and without
 			 * documentation of them, the easiest way to deal with this is a try...catch.
 			 */
-			e.printStackTrace();
 			return false;
 		}
 	}

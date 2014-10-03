@@ -39,6 +39,9 @@ public class UpdateChecker {
 		 */
 		Long thresholdTime = System.currentTimeMillis() - 5*60*1000;
 		
+		//Debug printing
+		System.out.println("["+Picklr.MODID+"] Version is "+Picklr.VERSION+" and detected latest version is "+cachedNewRelease);
+		
 		/*
 		 * If their version isn't up to date and it's been over 5 minutes since the last message
 		 */
@@ -59,13 +62,13 @@ public class UpdateChecker {
 			@Override
 			public void run() {
 				/*
-				 * We run this entire block in a try, because if it fails, it is unlikely any following step will be sucessful
+				 * We run this entire block in a try, because if it fails, it is unlikely any following step will be successful
 				 */
 				
 				try
 				{
 					//Define the update URL
-					URL website = new URL("https://twemyeez.com/Picklr/version.txt");
+					URL website = new URL("https://twemyeez.com/Picklr/api/version.txt");
 					
 					//Open a connection to the website
 					URLConnection connection = website.openConnection();
