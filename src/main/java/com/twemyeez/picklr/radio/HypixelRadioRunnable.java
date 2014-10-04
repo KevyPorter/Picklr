@@ -45,6 +45,9 @@ public class HypixelRadioRunnable implements Runnable {
 			// Apply ICY metadata cleansing to the stream
 			icyIs = new IcyInputStream(bufferedIn);
 
+			// Add the tag parser for allowing song name fetching
+			icyIs.addTagParseListener(new RadioParseTagListener());
+
 		} catch (Exception e) {
 			// Print a stack trace for debugging
 			e.printStackTrace();

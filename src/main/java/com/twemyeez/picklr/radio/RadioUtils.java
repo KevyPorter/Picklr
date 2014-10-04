@@ -25,7 +25,7 @@ public class RadioUtils {
 	public static FloatControl gainControl;
 	public static Thread thread;
 	public static Boolean inProgress = false;
-
+	public static String currentSong = "";
 	/*
 	 * This takes a decoded buffered audio input stream and format, and plays it
 	 */
