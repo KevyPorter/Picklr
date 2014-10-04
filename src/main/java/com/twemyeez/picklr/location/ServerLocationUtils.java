@@ -5,6 +5,8 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
 import com.twemyeez.picklr.auth.CommonAPI;
 import com.twemyeez.picklr.auth.SessionAuth;
+import com.twemyeez.picklr.config.ConfigurationHandler;
+import com.twemyeez.picklr.config.ConfigurationHandler.ConfigAttribute;
 import com.twemyeez.picklr.listener.ChatListener;
 import com.twemyeez.picklr.listener.ChatListener.ChatStatus;
 import com.twemyeez.picklr.utils.CommonUtils;
@@ -14,6 +16,9 @@ public class ServerLocationUtils {
 	// This string stores the current location of the user on the Hypixel Server
 	public static String currentServerName;
 
+	// This stores whether or not the user has enabled the location hud
+	public static Boolean locationHudEnabled = (Boolean) ConfigurationHandler
+			.getConfigurationAttribute(ConfigAttribute.HUD_ACTIVE);
 	/*
 	 * This method is used to send /whereami messages
 	 */

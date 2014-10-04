@@ -11,6 +11,7 @@ import com.twemyeez.picklr.config.ConfigurationHandler;
 import com.twemyeez.picklr.forums.ForumProcessor;
 import com.twemyeez.picklr.hud.FriendOnlineHud;
 import com.twemyeez.picklr.listener.ChatListener;
+import com.twemyeez.picklr.location.LocationGui;
 import com.twemyeez.picklr.location.ServerLocationUtils;
 import com.twemyeez.picklr.radio.RadioGui;
 
@@ -47,10 +48,14 @@ public class CommonUtils {
 		// Register GUI overlay
 		MinecraftForge.EVENT_BUS.register(new FriendOnlineHud(Minecraft
 				.getMinecraft()));
-		
+
 		// Register Radio Gui overlay
-				MinecraftForge.EVENT_BUS.register(new RadioGui(Minecraft
-						.getMinecraft()));
+		MinecraftForge.EVENT_BUS
+				.register(new RadioGui(Minecraft.getMinecraft()));
+
+		// Register Radio Gui overlay
+		MinecraftForge.EVENT_BUS.register(new LocationGui(Minecraft
+				.getMinecraft()));
 
 		// register the /debug command which does session checking
 		ClientCommandHandler.instance.registerCommand(new DebugCommand());

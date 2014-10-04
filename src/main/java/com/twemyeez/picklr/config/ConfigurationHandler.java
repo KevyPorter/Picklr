@@ -21,12 +21,34 @@ public class ConfigurationHandler {
 	 * which could be mispelled etc and cause bugs.
 	 */
 	public enum ConfigAttribute {
-		DEFAULT_LOBBY, AFK_RESPONSE, LOBBY_ENABLED, FORUM_USERNAME, FORUM_PASSWORD, LOBBY_DISPLAY_SIDE, PARTY_WARP_ENABLED;
+		DEFAULT_LOBBY, AFK_RESPONSE, LOBBY_ENABLED, FORUM_USERNAME, FORUM_PASSWORD, LOBBY_DISPLAY_SIDE, PARTY_WARP_ENABLED, HUD_ACTIVE;
 	};
 
 	// This returns the main configuration file
 	public static Configuration getMainConfig() {
 		return config;
+	}
+
+	/*
+	 * This deals with setting the config, it returns true or false depending
+	 * upon if the request was sucessful.
+	 */
+	public static Boolean setConfigurationAttribute(ConfigAttribute a,
+			Object value) {
+		// Check the attribute and return the value
+		switch (a) {
+		case HUD_ACTIVE:
+			config.get(
+					config.CATEGORY_GENERAL,
+					"Location HUD active",
+					false,
+					"This can be set to true to automatically have the location HUD active on Hypixel.")
+					.setValue((Boolean) value);
+			config.save();
+			return true;
+		default:
+			return false;
+		}
 	}
 
 	// This is used to return the value for a certain attribute, it's an object
@@ -69,6 +91,13 @@ public class ConfigurationHandler {
 			return config
 					.get(config.CATEGORY_GENERAL, "Party warp button", false,
 							"This controls whether the party warp function is enabled.")
+					.getBoolean(false);
+		case HUD_ACTIVE:
+			return config
+					.get(config.CATEGORY_GENERAL,
+							"Location HUD active",
+							false,
+							"This can be set to true to automatically have the location HUD active on Hypixel.")
 					.getBoolean(false);
 		default:
 			return null;
