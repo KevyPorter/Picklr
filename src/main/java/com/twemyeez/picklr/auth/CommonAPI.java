@@ -79,6 +79,7 @@ public class CommonAPI {
 			input.close();
 
 			// Return the string we created
+			System.out.println("API read: "+totalOutput);
 			return totalOutput;
 		} catch (Exception e) {
 			// If there was an exception, print the exception stack

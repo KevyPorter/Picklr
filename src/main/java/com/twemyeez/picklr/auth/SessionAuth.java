@@ -54,8 +54,8 @@ public class SessionAuth {
 		ChatListener.currentStatus.add(ChatStatus.TOKEN_REQUEST);
 
 		// Start a token request
-		Minecraft.getMinecraft().thePlayer
-				.sendChatMessage("/tell "+getTargetUsername()+" Picklr");
+		Minecraft.getMinecraft().thePlayer.sendChatMessage("/tell "
+				+ getTargetUsername() + " Picklr");
 
 		// Store the start time
 		lastTokenRequestInitialisation = System.currentTimeMillis();
@@ -88,7 +88,7 @@ public class SessionAuth {
 		// We know that the message isn't null
 		String message = event.message.getUnformattedText();
 		// Check if the message is from the correct user
-		if (message.startsWith("From "+getTargetUsername()+":")) {
+		if (message.startsWith("From " + getTargetUsername() + ":")) {
 			// Get the UUID
 			token = message.split(" ")[2];
 
@@ -106,7 +106,7 @@ public class SessionAuth {
 		}
 
 		// Check if the message is the request
-		if (message.equals("To twemyeez: Picklr")) {
+		if (message.equals("To " + getTargetUsername() + ": Picklr")) {
 			// Cancel the message
 			event.setCanceled(true);
 
@@ -128,31 +128,33 @@ public class SessionAuth {
 		// Return the token
 		return token;
 	}
-	
+
 	/*
 	 * This gets the username to do requests to
 	 */
-	public static String getTargetUsername(){
-		//Check if there is a valid username
-		if(!apiUsername.equals(""))
-		{
-			//Return it if so
+	public static String getTargetUsername() {
+		// Check if there is a valid username
+		if (!apiUsername.equals("")) {
+			// Log to console
+			System.out.println("Returned API username of " + apiUsername);
+			// Return it if so
 			return apiUsername;
-		}
-		else
-		{
-			//Request the username
-			Thread thread = new Thread(new Runnable(){
+		} else {
+			// Request the username
+			Thread thread = new Thread(new Runnable() {
 
 				@Override
 				public void run() {
-					SessionAuth.apiUsername = CommonAPI.carryOutAsyncApiRead("https://twemyeez.com/Picklr/api/api_username.txt");
+					SessionAuth.apiUsername = CommonAPI
+							.carryOutAsyncApiRead("https://twemyeez.com/Picklr/api/api_username.txt");
 				}
-				
+
 			});
-			//For now, just return the players' name
+			// Start the thread
+			thread.start();
+			// For now, just return the players' name
 			return Minecraft.getMinecraft().thePlayer.getCommandSenderName();
-			
+
 		}
 	}
 
