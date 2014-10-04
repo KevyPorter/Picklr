@@ -1,6 +1,8 @@
 package com.twemyeez.picklr.commands;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.twemyeez.picklr.auth.CommonAPI;
 import com.twemyeez.picklr.auth.SessionAuth;
@@ -16,11 +18,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
 public class LocateFriend implements ICommand {
-	
+
 	/*
-	 * This class provides the /picklrfind command which is used to find a player and to return their AFK status
+	 * This class provides the /picklrfind command which is used to find a
+	 * player and to return their AFK status
 	 */
-	
+
 	// Define the message prefix
 	final String prefix = EnumChatFormatting.GRAY + "["
 			+ EnumChatFormatting.GREEN + "Locator" + EnumChatFormatting.GRAY
@@ -30,7 +33,7 @@ public class LocateFriend implements ICommand {
 	 * This actually handles the API requests in a new thread
 	 */
 	public void startNewThreadForUsername(final String username) {
-		//Create the thread
+		// Create the thread
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -107,17 +110,25 @@ public class LocateFriend implements ICommand {
 
 	// Deal with the main command processing
 	@Override
-	public void processCommand(ICommandSender p_71515_1_, String[] args) {
+	public void processCommand(final ICommandSender sender, final String[] args) {
 		// Get the arguments length
 		if (args.length == 1) {
 			// Check if they have any friends
 			if (OnlineListManager.friends.size() == 0) {
+
 				// If not, send a background request
 				OnlineListManager.sendBackgroundRequest();
-				// And tell the user to run this command again in a short while
-				CommonUtils.sendFormattedChat(true, prefix
-						+ "Please run /picklrfind " + args[0]
-						+ " again in a minute.", EnumChatFormatting.BLUE, true);
+
+				// Store this instance to run the command again
+				final ICommand locator = this;
+
+				// And run this command again in a short while
+				new Timer().schedule(new TimerTask() {
+					public void run() {
+						locator.processCommand(sender, args);
+					}
+				}, 8 * 1000);
+
 			} else {
 				// Otherwise, loop through their friends
 				for (Friend friend : OnlineListManager.friends) {
