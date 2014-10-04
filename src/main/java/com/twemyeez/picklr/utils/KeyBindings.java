@@ -21,11 +21,18 @@ public class KeyBindings {
 	public static KeyBinding toggleLocationHud = new KeyBinding("Location HUD",
 			Keyboard.KEY_V, "Picklr");
 
+	public static KeyBinding changeRightClickActionToAdd = new KeyBinding(
+			"Right click to add", Keyboard.KEY_O, "Picklr");
+
 	public KeyBindings() {
 		// Register the friend list key binding
 		ClientRegistry.registerKeyBinding(friendList);
 
 		// Register the server HUD key binding
+		ClientRegistry.registerKeyBinding(toggleLocationHud);
+		
+		//Register the right click add friend key
+		ClientRegistry.registerKeyBinding(changeRightClickActionToAdd);
 	}
 
 	@SubscribeEvent
