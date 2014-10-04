@@ -8,6 +8,7 @@ import com.twemyeez.picklr.commands.HudToggle;
 import com.twemyeez.picklr.commands.RadioToggle;
 import com.twemyeez.picklr.commands.RadioVolume;
 import com.twemyeez.picklr.config.ConfigurationHandler;
+import com.twemyeez.picklr.forums.ForumProcessor;
 import com.twemyeez.picklr.hud.FriendOnlineHud;
 import com.twemyeez.picklr.listener.ChatListener;
 import com.twemyeez.picklr.location.ServerLocationUtils;
@@ -59,6 +60,9 @@ public class CommonUtils {
 		
 		//Register the handler for configuration changes
 		FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
+		
+		//Call the method that will schedule the forum timer task if required
+		ForumProcessor.initialise();
 	}
 	
 	/*
@@ -102,7 +106,7 @@ public class CommonUtils {
 		//Prepend the mod ID prefix if it's being used.
 		if(doPrefix)
 		{
-			message = EnumChatFormatting.BLUE + "["+Picklr.MODID+"] "+message;
+			message = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.BLUE + Picklr.MODID + EnumChatFormatting.GRAY + "] "+message;
 		}
 		
 		//this is the alert bar string. It should just fill chat horizontally

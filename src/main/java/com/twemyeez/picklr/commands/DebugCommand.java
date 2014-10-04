@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.twemyeez.picklr.auth.SessionAuth;
+import com.twemyeez.picklr.forums.ForumProcessor;
 import com.twemyeez.picklr.friends.Friend;
 import com.twemyeez.picklr.friends.OnlineListManager;
 import com.twemyeez.picklr.radio.RadioUtils;
@@ -60,6 +61,18 @@ public class DebugCommand implements ICommand{
 	  {
 		  //Tell them the token
 		  CommonUtils.sendFormattedChat(true, "Token: "+SessionAuth.getToken(), EnumChatFormatting.BLUE, true);
+		  
+		  //Check the forums are enabled
+		  if(ForumProcessor.checkForumsEnabled())
+		  {
+			  //If they're enabled, send the alert
+			  CommonUtils.sendFormattedChat(true, ForumProcessor.getMessageNumberFromToken(), EnumChatFormatting.GOLD, true);
+		  }
+		  else
+		  {
+			  //Otherwise, tell the user
+			  CommonUtils.sendFormattedChat(true, "[Forum] Please check your forum credentials.", EnumChatFormatting.BLUE, true);
+		  }
 		  
 		  //Now work on displaying saved friends
 		  CommonUtils.sendFormattedChat(true, "Detected the following friends:", EnumChatFormatting.RED, true);
