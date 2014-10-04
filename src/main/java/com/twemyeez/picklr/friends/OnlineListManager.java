@@ -2,17 +2,19 @@ package com.twemyeez.picklr.friends;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
 import com.twemyeez.picklr.Picklr;
+import com.twemyeez.picklr.auth.CommonAPI;
+import com.twemyeez.picklr.auth.SessionAuth;
 import com.twemyeez.picklr.hud.FriendOnlineHud;
 import com.twemyeez.picklr.listener.ChatListener;
 import com.twemyeez.picklr.listener.ChatListener.ChatStatus;
 import com.twemyeez.picklr.utils.CommonUtils;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -147,7 +149,7 @@ public class OnlineListManager {
 			if (message.indexOf(":") == -1 && message.indexOf("punched") == -1
 					&& message.indexOf("joined") == -1) {
 				// We'll split into words for further processing
-				String[] messageSplit = message.split(" ");
+				final String[] messageSplit = message.split(" ");
 
 				// Check for "is" to ensure it's a status
 				if (messageSplit[1].equals("is")) {
@@ -169,6 +171,8 @@ public class OnlineListManager {
 						// Now add the object
 						friends.add(new Friend(messageSplit[0], event.message
 								.getFormattedText().split(" ")[0], status));
+						
+					
 					} else {
 						// If the fourth word is "offline" it means they're
 						// offline, so we hide them

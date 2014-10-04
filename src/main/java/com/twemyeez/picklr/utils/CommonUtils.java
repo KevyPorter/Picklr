@@ -6,6 +6,7 @@ import com.twemyeez.picklr.Picklr;
 import com.twemyeez.picklr.commands.BulkFriend;
 import com.twemyeez.picklr.commands.DebugCommand;
 import com.twemyeez.picklr.commands.HudToggle;
+import com.twemyeez.picklr.commands.LocateFriend;
 import com.twemyeez.picklr.commands.RadioToggle;
 import com.twemyeez.picklr.commands.RadioVolume;
 import com.twemyeez.picklr.config.ConfigurationHandler;
@@ -67,6 +68,9 @@ public class CommonUtils {
 
 		// register the /radio command which toggles radio on and off
 		ClientCommandHandler.instance.registerCommand(new RadioToggle());
+
+		// register the /picklrfind command which lets people find friends
+		ClientCommandHandler.instance.registerCommand(new LocateFriend());
 
 		// register the /hud command which toggles friend HUD on and off
 		ClientCommandHandler.instance.registerCommand(new HudToggle());
