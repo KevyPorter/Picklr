@@ -11,33 +11,29 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = Picklr.MODID, version = Picklr.VERSION, guiFactory = "com.twemyeez.picklr.config.ConfigGuiFactory")
-public class Picklr
-{
-    public static final String MODID = "Picklr";
-    public static final String VERSION = "Lambda";
-    
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
-    	/*
-    	 * Carry out the various tasks required for the config to run
-    	 */
-    	
-    	ConfigurationHandler.initialise(event);
-    }
-    
-    @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
-    	/*
-    	 * Carry out the various tasks required for the modification to run
-    	 */
-    	
-    	//Register all event handlers
-    	CommonUtils.registerHandlers();
-    	
-    	//Check for updates
-    	UpdateChecker.requestLatestVersion();
-    }
-}
+public class Picklr {
+	public static final String MODID = "Picklr";
+	public static final String VERSION = "Lambda";
 
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event) {
+		/*
+		 * Carry out the various tasks required for the config to run
+		 */
+
+		ConfigurationHandler.initialise(event);
+	}
+
+	@EventHandler
+	public void init(FMLInitializationEvent event) {
+		/*
+		 * Carry out the various tasks required for the modification to run
+		 */
+
+		// Register all event handlers
+		CommonUtils.registerHandlers();
+
+		// Check for updates
+		UpdateChecker.requestLatestVersion();
+	}
+}

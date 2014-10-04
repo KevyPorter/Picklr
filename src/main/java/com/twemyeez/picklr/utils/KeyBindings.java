@@ -12,23 +12,23 @@ import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 
 public class KeyBindings {
-	public static KeyBinding friendList = new KeyBinding("Friends list", Keyboard.KEY_F, "PickledChat");
-	
-	public KeyBindings()
-	{
-		//Register the friend list key binding
+	public static KeyBinding friendList = new KeyBinding("Friends list",
+			Keyboard.KEY_F, "PickledChat");
+
+	public KeyBindings() {
+		// Register the friend list key binding
 		ClientRegistry.registerKeyBinding(friendList);
 	}
-	
+
 	@SubscribeEvent
 	public void KeyInputEvent(KeyInputEvent event) {
 		/*
 		 * There's been a key input event, so let's check what's been pressed
 		 */
-		
-		//For the online friend list, if the key is pressed, we run the friend list function
-		if(friendList.isPressed())
-		{
+
+		// For the online friend list, if the key is pressed, we run the friend
+		// list function
+		if (friendList.isPressed()) {
 			OnlineListManager.runFriendList();
 		}
 	}
