@@ -3,6 +3,7 @@ package com.twemyeez.picklr.utils;
 import java.io.IOException;
 
 import com.twemyeez.picklr.Picklr;
+import com.twemyeez.picklr.commands.BulkFriend;
 import com.twemyeez.picklr.commands.DebugCommand;
 import com.twemyeez.picklr.commands.HudToggle;
 import com.twemyeez.picklr.commands.RadioToggle;
@@ -68,6 +69,10 @@ public class CommonUtils {
 
 		// register the /hud command which toggles friend HUD on and off
 		ClientCommandHandler.instance.registerCommand(new HudToggle());
+
+		// register the /bulkfriend command which processes or denies all friend
+		// requests
+		ClientCommandHandler.instance.registerCommand(new BulkFriend());
 
 		// Register the handler for configuration changes
 		FMLCommonHandler.instance().bus().register(new ConfigurationHandler());

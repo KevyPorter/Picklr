@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.twemyeez.picklr.auth.SessionAuth;
+import com.twemyeez.picklr.commands.BulkFriend;
 import com.twemyeez.picklr.friends.OnlineListManager;
 import com.twemyeez.picklr.location.ServerLocationUtils;
 import com.twemyeez.picklr.utils.CommonUtils;
@@ -17,7 +18,7 @@ public class ChatListener {
 	 * This enum holds the various status's that can be used for chat
 	 */
 	public enum ChatStatus {
-		READY, WHEREAMI, FRIEND_GETTING_PAGE, FRIEND_LISTING, AFK, BACKGROUND_FRIEND, TOKEN_REQUEST
+		READY, WHEREAMI, FRIEND_GETTING_PAGE, FRIEND_LISTING, AFK, BACKGROUND_FRIEND, TOKEN_REQUEST, FRIEND_REQUEST_PROCESSING
 	};
 
 	/*
@@ -32,6 +33,7 @@ public class ChatListener {
 	 */
 	@SubscribeEvent
 	public void ClientChatReceivedEvent(ClientChatReceivedEvent event) {
+
 		// Check the message isn't null and that they're not on another server
 		if (event.message == null || !CommonUtils.isHypixel()) {
 			return;
@@ -57,6 +59,11 @@ public class ChatListener {
 			// Call the method for dealing with token messages in case this is
 			// one
 			SessionAuth.relatedChatEventHandler(event);
+		}
+
+		if (currentStatus.contains(ChatStatus.FRIEND_REQUEST_PROCESSING)) {
+			// Fire the method for friend request bulk processing if needed
+			BulkFriend.relatedChatEventHandler(event);
 		}
 	}
 }
