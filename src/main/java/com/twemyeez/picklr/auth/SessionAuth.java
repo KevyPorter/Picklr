@@ -28,10 +28,9 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
 public class SessionAuth {
 	/*
-	 * This class is a work in progress and is not currently used anywhere. The
-	 * aim of this class is going to be to handle authentication with the Picklr
-	 * API when it is released, because the PickledChat API was somewhat flawed
-	 * in this respect.
+	 * The aim of this class is going to be to handle authentication with the
+	 * Picklr API when it is released, because the PickledChat API was somewhat
+	 * flawed in this respect.
 	 */
 
 	/*
@@ -43,6 +42,9 @@ public class SessionAuth {
 	// Holds system time in millis of last request completion
 	public static Long lastTokenRequestCompletion = 0L;
 
+	// This holds the API username to direct requests to
+	public static String apiUsername = "";
+
 	// Holds the most recent token
 	public static String token = "";
 
@@ -53,7 +55,7 @@ public class SessionAuth {
 
 		// Start a token request
 		Minecraft.getMinecraft().thePlayer
-				.sendChatMessage("/tell twemyeez Picklr");
+				.sendChatMessage("/tell "+getTargetUsername()+" Picklr");
 
 		// Store the start time
 		lastTokenRequestInitialisation = System.currentTimeMillis();
@@ -86,7 +88,7 @@ public class SessionAuth {
 		// We know that the message isn't null
 		String message = event.message.getUnformattedText();
 		// Check if the message is from the correct user
-		if (message.startsWith("From twemyeez:")) {
+		if (message.startsWith("From "+getTargetUsername()+":")) {
 			// Get the UUID
 			token = message.split(" ")[2];
 
@@ -125,6 +127,33 @@ public class SessionAuth {
 
 		// Return the token
 		return token;
+	}
+	
+	/*
+	 * This gets the username to do requests to
+	 */
+	public static String getTargetUsername(){
+		//Check if there is a valid username
+		if(!apiUsername.equals(""))
+		{
+			//Return it if so
+			return apiUsername;
+		}
+		else
+		{
+			//Request the username
+			Thread thread = new Thread(new Runnable(){
+
+				@Override
+				public void run() {
+					SessionAuth.apiUsername = CommonAPI.carryOutAsyncApiRead("https://twemyeez.com/Picklr/api/api_username.txt");
+				}
+				
+			});
+			//For now, just return the players' name
+			return Minecraft.getMinecraft().thePlayer.getCommandSenderName();
+			
+		}
 	}
 
 }

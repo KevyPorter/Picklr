@@ -1,5 +1,6 @@
 package com.twemyeez.picklr;
 
+import com.twemyeez.picklr.auth.SessionAuth;
 import com.twemyeez.picklr.config.ConfigurationHandler;
 import com.twemyeez.picklr.hud.FriendOnlineHud;
 import com.twemyeez.picklr.utils.CommonUtils;
@@ -35,5 +36,13 @@ public class Picklr {
 
 		// Check for updates
 		UpdateChecker.requestLatestVersion();
+
+		// Try to do API read of username
+		try {
+			SessionAuth.getTargetUsername();
+		} catch (Exception e) {
+			//If there was an exception, print the stack trace
+			e.printStackTrace();
+		}
 	}
 }

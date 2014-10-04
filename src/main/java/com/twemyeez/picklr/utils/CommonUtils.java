@@ -147,5 +147,5 @@ public class CommonUtils {
 					.addChatMessage(new ChatComponentText(alertBar));
 		}
 	}
-
+	
 }
