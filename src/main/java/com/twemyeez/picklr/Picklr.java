@@ -1,5 +1,7 @@
 package com.twemyeez.picklr;
 
+import net.minecraft.client.Minecraft;
+
 import com.twemyeez.picklr.auth.SessionAuth;
 import com.twemyeez.picklr.config.ConfigurationHandler;
 import com.twemyeez.picklr.hud.FriendOnlineHud;
@@ -31,6 +33,13 @@ public class Picklr {
 		 * Carry out the various tasks required for the modification to run
 		 */
 
+		// Print debug
+		System.out
+				.println(Minecraft.getMinecraft().mcDataDir.getAbsoluteFile());
+
+		// Install libraries if required
+		InstallManager.unzip();
+
 		// Register all event handlers
 		CommonUtils.registerHandlers();
 
@@ -41,8 +50,8 @@ public class Picklr {
 		try {
 			SessionAuth.getTargetUsername();
 		} catch (Exception e) {
-			//If there was an exception, print the stack trace
-			e.printStackTrace();
+			// If there was an exception, silently hide it (there will be a null
+			// pointer because there is no player)
 		}
 	}
 }
