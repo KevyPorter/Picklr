@@ -10,6 +10,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
 import com.twemyeez.picklr.Picklr;
+import com.twemyeez.picklr.afk.AFKHandler;
 import com.twemyeez.picklr.config.ConfigurationHandler;
 import com.twemyeez.picklr.config.ConfigurationHandler.ConfigAttribute;
 import com.twemyeez.picklr.friends.Friend;
@@ -36,6 +37,9 @@ public class KeyBindings {
 	public static KeyBinding lobby = new KeyBinding("Lobby", Keyboard.KEY_L,
 			"Picklr");
 
+	public static KeyBinding afk = new KeyBinding("AFK Key", Keyboard.KEY_K,
+			"Picklr");
+
 	public static List<KeyBinding> pressedWithinTimeframe = new ArrayList<KeyBinding>();
 
 	public KeyBindings() {
@@ -50,6 +54,9 @@ public class KeyBindings {
 
 		// Register key binding for lobby
 		ClientRegistry.registerKeyBinding(lobby);
+
+		// Register key binding for afk
+		ClientRegistry.registerKeyBinding(afk);
 	}
 
 	@SubscribeEvent
@@ -105,16 +112,21 @@ public class KeyBindings {
 			}
 
 		}
+		
+		if(afk.isPressed()){
+			//Handle the AFK event
+			AFKHandler.setAfk(!AFKHandler.getAfK());
+		}
 
 		if (lobby.isPressed()) {
 			// If it was the lobby key
-			
-			//Check it is Hypixel
+
+			// Check it is Hypixel
 			if (!CommonUtils.isHypixel()) {
 				return;
 			}
 
-			//Check if the lobby button is enabled
+			// Check if the lobby button is enabled
 			if (!((Boolean) ConfigurationHandler
 					.getConfigurationAttribute(ConfigAttribute.LOBBY_ENABLED))) {
 				return;

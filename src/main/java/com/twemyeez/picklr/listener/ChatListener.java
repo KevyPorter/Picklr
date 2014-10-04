@@ -3,6 +3,7 @@ package com.twemyeez.picklr.listener;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.twemyeez.picklr.afk.AFKHandler;
 import com.twemyeez.picklr.auth.SessionAuth;
 import com.twemyeez.picklr.commands.BulkFriend;
 import com.twemyeez.picklr.friends.OnlineListManager;
@@ -24,7 +25,7 @@ public class ChatListener {
 	 * This enum holds the various status's that can be used for chat
 	 */
 	public enum ChatStatus {
-		READY, WHEREAMI, FRIEND_GETTING_PAGE, FRIEND_LISTING, AFK, BACKGROUND_FRIEND, TOKEN_REQUEST, FRIEND_REQUEST_PROCESSING
+		READY, WHEREAMI, FRIEND_GETTING_PAGE, FRIEND_LISTING, BACKGROUND_FRIEND, TOKEN_REQUEST, FRIEND_REQUEST_PROCESSING
 	};
 
 	/*
@@ -71,6 +72,9 @@ public class ChatListener {
 			// Fire the method for friend request bulk processing if needed
 			BulkFriend.relatedChatEventHandler(event);
 		}
+		
+		//See if they're AFK
+		AFKHandler.handleChat(event);
 
 		// Now we'll monitor to see if it's a join message
 		handleJoinEvent(event);

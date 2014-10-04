@@ -164,7 +164,7 @@ public class ForumProcessor {
 		Timer forumTimer = new Timer();
 
 		// Schedule the timer to run every 5 minutes
-		forumTimer.schedule(forumChecker, 60 * 1000, 5 * 60 * 1000);
+		forumTimer.schedule(forumChecker, 60 * 1000, 15 * 60 * 1000);
 
 	}
 }

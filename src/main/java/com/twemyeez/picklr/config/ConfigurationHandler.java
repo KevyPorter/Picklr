@@ -21,7 +21,7 @@ public class ConfigurationHandler {
 	 * which could be mispelled etc and cause bugs.
 	 */
 	public enum ConfigAttribute {
-		DEFAULT_LOBBY, AFK_RESPONSE, LOBBY_ENABLED, FORUM_USERNAME, FORUM_PASSWORD, LOBBY_DISPLAY_SIDE, PARTY_WARP_ENABLED, HUD_ACTIVE;
+		DEFAULT_LOBBY, AFK_RESPONSE_ENABLED, AFK_RESPONSE, LOBBY_ENABLED, FORUM_USERNAME, FORUM_PASSWORD, LOBBY_DISPLAY_SIDE, PARTY_WARP_ENABLED, HUD_ACTIVE;
 	};
 
 	// This returns the main configuration file
@@ -61,12 +61,18 @@ public class ConfigurationHandler {
 					.get(config.CATEGORY_GENERAL, "Default Lobby", "main",
 							"This controls the default lobby chosen by the lobby button.")
 					.getString();
-		case AFK_RESPONSE:
+		case AFK_RESPONSE_ENABLED:
 			return config
 					.get(config.CATEGORY_GENERAL, "Do auto responses when AFK",
 							true,
 							"Setting this to false disables automatic replies when AFK mode is activated.")
 					.getBoolean(true);
+		case AFK_RESPONSE:
+			return config
+					.get(config.CATEGORY_GENERAL, "AFK Answer",
+							"I'm currently AFK and this is an automatic reply. I'll get back to you later, sorry",
+							"The AFK response")
+					.getString();
 		case LOBBY_ENABLED:
 			return config
 					.get(config.CATEGORY_GENERAL, "Lobby button enabled",
