@@ -171,8 +171,7 @@ public class OnlineListManager {
 						// Now add the object
 						friends.add(new Friend(messageSplit[0], event.message
 								.getFormattedText().split(" ")[0], status));
-						
-					
+
 					} else {
 						// If the fourth word is "offline" it means they're
 						// offline, so we hide them

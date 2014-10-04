@@ -16,8 +16,13 @@ public class RadioParseTagListener implements TagParseListener {
 	 */
 	@Override
 	public void tagParsed(TagParseEvent event) {
-		//Print a debug message
-		System.out.println("Tag parsed for radio.");
+		// Print a debug message
+		System.out.println("Tag parsed for radio " + event.getTag().getName());
+
+		//Check it is the song change
+		if (!event.getTag().getName().equals("StreamTitle")) {
+			return;
+		}
 		
 		// Define the message prefix
 		String prefix = EnumChatFormatting.GRAY + "["
@@ -25,9 +30,9 @@ public class RadioParseTagListener implements TagParseListener {
 				+ EnumChatFormatting.GRAY + "] ";
 
 		// Send the user an alert saying the song has changed
-		CommonUtils.sendFormattedChat(true,
-				prefix+"Now playing '"+event.getTag().getValue()+"'",
-				EnumChatFormatting.GOLD, true);
+		CommonUtils.sendFormattedChat(true, prefix + "Now playing '"
+				+ event.getTag().getValue() + "'", EnumChatFormatting.GOLD,
+				true);
 
 		// Save the current song
 		RadioUtils.currentSong = (String) event.getTag().getValue();

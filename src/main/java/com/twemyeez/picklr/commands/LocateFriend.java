@@ -111,6 +111,15 @@ public class LocateFriend implements ICommand {
 	// Deal with the main command processing
 	@Override
 	public void processCommand(final ICommandSender sender, final String[] args) {
+		// Check is hypixel
+		if (!CommonUtils.isHypixel()) {
+			// Tell the user the command is only for Hypixel
+			CommonUtils.sendFormattedChat(true, prefix
+					+ "This can only be run on the Hypixel server.",
+					EnumChatFormatting.BLUE, true);
+			return;
+		}
+
 		// Get the arguments length
 		if (args.length == 1) {
 			// Check if they have any friends
