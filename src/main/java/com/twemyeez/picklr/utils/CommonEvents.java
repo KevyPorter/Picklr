@@ -28,7 +28,7 @@ public class CommonEvents {
 	 * Detecting server change is required for quite a few features. Thus, we
 	 * decide to only have one listener for it - this one. It can be called
 	 * multiple times per lobby change, hence we'll do a check so it's not run
-	 * more than once per 3500ms.
+	 * more than once per 5000ms.
 	 */
 
 	// This variable stores the last time a GUI was shown
@@ -39,24 +39,18 @@ public class CommonEvents {
 	public void onGuiShow(GuiOpenEvent event) {
 		if (CommonUtils.isHypixel()) {
 			// The user is confirmed to be on the Hypixel network and the time
-			// of last show is more than 3500ms ago
+			// of last show is more than 5000ms ago
 			if ((event.gui instanceof GuiDownloadTerrain)
-					&& (lastGuiShow < (System.currentTimeMillis() - 3500))) {
+					&& (lastGuiShow < (System.currentTimeMillis() - 5000))) {
+				// Save the current time, to ensure we don't show the update
+				// dialogue too often.
+				lastGuiShow = System.currentTimeMillis();
+
 				// This implies it is a server change
 				ServerLocationUtils.sendServer();
 
 				// Do the check for updates
 				UpdateChecker.checkForUpdate();
-
-				// Save the current time, to ensure we don't show the update
-				// dialogue too often.
-				lastGuiShow = System.currentTimeMillis();
-
-				// Check if their authentication token is valid
-				if (!SessionAuth.checkTokenValid()) {
-					// If it is not, request a new one
-					SessionAuth.startTokenRequest();
-				}
 			}
 		}
 	}
@@ -74,11 +68,10 @@ public class CommonEvents {
 			// Get the player and get their name
 			EntityPlayer Player = (EntityPlayer) event.target;
 			String name = Player.getCommandSenderName();
-			
-			//Check the player is in a lobby
-			if(!ServerLocationUtils.currentServerName.contains("lobby"))
-			{
-				//If they are not, return without doing anything
+
+			// Check the player is in a lobby
+			if (!ServerLocationUtils.currentServerName.contains("lobby")) {
+				// If they are not, return without doing anything
 				return;
 			}
 
@@ -109,9 +102,9 @@ public class CommonEvents {
 									+ "Click here to add "
 									+ EnumChatFormatting.YELLOW + name)
 							.setChatStyle(chatStyle));
-					
+
 				} else {
-					
+
 					// Create the chat style to suggest /telling the user
 					ChatStyle chatStyle = new ChatStyle()
 							.setChatClickEvent(new ClickEvent(

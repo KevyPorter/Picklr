@@ -59,6 +59,9 @@ public class SessionAuth {
 
 		// Store the start time
 		lastTokenRequestInitialisation = System.currentTimeMillis();
+
+		// Debug message
+		System.out.println("API request in progress");
 	}
 
 	/*

@@ -19,6 +19,7 @@ public class ServerLocationUtils {
 	// This stores whether or not the user has enabled the location hud
 	public static Boolean locationHudEnabled = (Boolean) ConfigurationHandler
 			.getConfigurationAttribute(ConfigAttribute.HUD_ACTIVE);
+
 	/*
 	 * This method is used to send /whereami messages
 	 */
