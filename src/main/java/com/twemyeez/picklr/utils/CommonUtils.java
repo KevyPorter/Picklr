@@ -110,7 +110,7 @@ public class CommonUtils {
 		}
 		
 		//this is the alert bar string. It should just fill chat horizontally
-		String alertBar = EnumChatFormatting.AQUA+"----------------------------------------------------";
+		String alertBar = EnumChatFormatting.AQUA+"-----------------------------------------------------";
 		
 		//if they've enabled alert bars, then show one before the message
 		if(doAlertBars)
