@@ -10,6 +10,12 @@ import com.twemyeez.picklr.location.ServerLocationUtils;
 import com.twemyeez.picklr.utils.CommonUtils;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.event.ClickEvent;
+import net.minecraft.event.HoverEvent;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
 public class ChatListener {
@@ -64,6 +70,47 @@ public class ChatListener {
 		if (currentStatus.contains(ChatStatus.FRIEND_REQUEST_PROCESSING)) {
 			// Fire the method for friend request bulk processing if needed
 			BulkFriend.relatedChatEventHandler(event);
+		}
+
+		// Now we'll monitor to see if it's a join message
+		handleJoinEvent(event);
+	}
+
+	public static void handleJoinEvent(ClientChatReceivedEvent event) {
+		// Get the message
+		String message = event.message.getUnformattedText();
+
+		if (message.contains(":")) {
+			// It is chat, so return
+			return;
+		}
+
+		// Otherwise, we'll check it's the right length and contains "joined."
+		if (message.split(" ").length == 2
+				&& message.split(" ")[1].equals("joined.")) {
+			// We know it's a join message so cancel the event
+			event.setCanceled(true);
+
+			// Get the username
+			String nameJoined = message.split(" ")[0];
+
+			// Create the chat style with click event
+			ChatStyle chatStyle = new ChatStyle()
+					.setChatClickEvent(new ClickEvent(
+							ClickEvent.Action.SUGGEST_COMMAND, "/tell "
+									+ nameJoined + " hi"));
+
+			// Add the hover message to the chat style
+			chatStyle = chatStyle.setChatHoverEvent(new HoverEvent(
+					HoverEvent.Action.SHOW_TEXT, new ChatComponentText(
+							EnumChatFormatting.BLUE + "Click to "
+									+ EnumChatFormatting.YELLOW + "message")));
+
+			// Send the player a message with prominent bars to show them
+			CommonUtils.sendFormattedChatWithPrefix(new ChatComponentText(
+					event.message.getFormattedText()).setChatStyle(chatStyle),
+					true);
+
 		}
 	}
 }

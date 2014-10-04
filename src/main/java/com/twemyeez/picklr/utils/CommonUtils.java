@@ -20,6 +20,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -147,5 +148,34 @@ public class CommonUtils {
 					.addChatMessage(new ChatComponentText(alertBar));
 		}
 	}
-	
+
+	public static void sendFormattedChatWithPrefix(IChatComponent msg,
+			Boolean doAlertBars) {
+		// Create the main message prefix
+		IChatComponent mainMessage = new ChatComponentText(
+				EnumChatFormatting.GRAY + "[" + EnumChatFormatting.BLUE
+						+ Picklr.MODID + EnumChatFormatting.GRAY + "] ");
+
+		// this is the alert bar string. It should just fill chat horizontally
+		String alertBar = EnumChatFormatting.AQUA
+				+ "-----------------------------------------------------";
+
+		// if they've enabled alert bars, then show one before the message
+		if (doAlertBars) {
+			Minecraft.getMinecraft().thePlayer
+					.addChatMessage(new ChatComponentText(alertBar));
+		}
+
+		// Send the message
+		Minecraft.getMinecraft().thePlayer.addChatMessage(mainMessage
+				.appendSibling(msg));
+
+		// if they've enabled alert bars, then show another one after the
+		// message
+		if (doAlertBars) {
+			Minecraft.getMinecraft().thePlayer
+					.addChatMessage(new ChatComponentText(alertBar));
+		}
+	}
+
 }
