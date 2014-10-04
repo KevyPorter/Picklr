@@ -10,18 +10,18 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
-public class RadioGui extends Gui{
-	String statusIndicator = EnumChatFormatting.DARK_AQUA+ "♫"+EnumChatFormatting.RESET;
+public class RadioGui extends Gui {
+	String statusIndicator = EnumChatFormatting.DARK_AQUA + "♫"
+			+ EnumChatFormatting.RESET;
 	private Minecraft mc;
 
-	public RadioGui(Minecraft mc)
-	{
+	public RadioGui(Minecraft mc) {
 		super();
 
 		// Set the value of the mc variable
 		this.mc = mc;
 	}
-	
+
 	@SubscribeEvent
 	public void onRenderOfOverlay(RenderGameOverlayEvent event) {
 		// Check the event is not cancellable
@@ -38,14 +38,15 @@ public class RadioGui extends Gui{
 		if (!RadioUtils.inProgress) {
 			return;
 		}
-		
-		//Otherwise, proceed to render icon
-		ScaledResolution screenResolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+
+		// Otherwise, proceed to render icon
+		ScaledResolution screenResolution = new ScaledResolution(mc,
+				mc.displayWidth, mc.displayHeight);
 		int height = screenResolution.getScaledHeight();
 		height = height - mc.fontRenderer.FONT_HEIGHT;
-	
-		mc.fontRenderer.drawStringWithShadow(statusIndicator, 1, height, 0xFFFFFF);
+
+		mc.fontRenderer.drawStringWithShadow(statusIndicator, 1, height,
+				0xFFFFFF);
 	}
-	
-	
+
 }

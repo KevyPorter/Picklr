@@ -67,7 +67,7 @@ public class CommonUtils {
 		// Register the handler for configuration changes
 		FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
 
-		// Call the method that will schedule the forum timer task if required
+		// Call the method that will schedule the forum timer task
 		ForumProcessor.initialise();
 	}
 
