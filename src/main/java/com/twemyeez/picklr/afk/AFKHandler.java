@@ -28,9 +28,9 @@ public class AFKHandler {
 	 * This handles changing the AFK status
 	 */
 	public static void setAfk(Boolean value) {
-		//Do API write
+		// Do API write
 		AfkAPI.changeAfkStatus(value);
-		
+
 		// Get a nice readable "on" or "off" from the value
 		String status;
 		if (value) {
@@ -46,29 +46,35 @@ public class AFKHandler {
 		// Set the status
 		afkStatus = value;
 
-		if (value == true) {
-			//Tell them the messages
+		if (value == false) {
+			// Tell them the messages
 			CommonUtils.sendFormattedChat(true, prefix
 					+ "You recieved the following: ", EnumChatFormatting.BLUE,
 					false);
 
-			//Count the way through
+			// Count the way through
 			int i = 1;
 
-			//Go through all messages
+			// Go through all messages
 			for (String message : messagesSaved) {
-				//Say message + number
+				// Say message + number
 				CommonUtils.sendFormattedChat(false, EnumChatFormatting.BLUE
 						+ "Message " + EnumChatFormatting.BLUE + i + ": "
 						+ EnumChatFormatting.WHITE + message,
 						EnumChatFormatting.WHITE, false);
-				//Increment counter
+				// Increment counter
 				i++;
 			}
-			//Clear saved messages
+
+			// If there were no messages, say so
+			if (i == 1) {
+				CommonUtils.sendFormattedChat(true, "No messages recieved",
+						EnumChatFormatting.YELLOW, false);
+			}
+			// Clear saved messages
 			messagesSaved.clear();
-			
-			//Clear cached usernames
+
+			// Clear cached usernames
 			cachedUsernames.clear();
 		}
 	}
