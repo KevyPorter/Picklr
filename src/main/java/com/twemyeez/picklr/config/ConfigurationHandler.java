@@ -21,7 +21,7 @@ public class ConfigurationHandler {
 	 * which could be mispelled etc and cause bugs.
 	 */
 	public enum ConfigAttribute {
-		DEFAULT_LOBBY, AFK_RESPONSE_ENABLED, AFK_RESPONSE, LOBBY_ENABLED, FORUM_USERNAME, FORUM_PASSWORD, LOBBY_DISPLAY_SIDE, PARTY_WARP_ENABLED, HUD_ACTIVE;
+		DEFAULT_LOBBY, AFK_RESPONSE_ENABLED, AFK_RESPONSE, LOBBY_ENABLED, FORUM_USERNAME, FORUM_PASSWORD, LOBBY_DISPLAY_SIDE, PARTY_WARP_ENABLED, HUD_ACTIVE, FIRST_JOIN;
 	};
 
 	// This returns the main configuration file
@@ -46,6 +46,14 @@ public class ConfigurationHandler {
 					.setValue((Boolean) value);
 			config.save();
 			return true;
+		case FIRST_JOIN:
+			config.get(
+					config.CATEGORY_GENERAL,
+					"Show introduction",
+					false,
+					"This can be set to decide whether or not to show the introduction on the next server join.")
+					.setValue((Boolean) value);
+			config.save();
 		default:
 			return false;
 		}
@@ -69,10 +77,10 @@ public class ConfigurationHandler {
 					.getBoolean(true);
 		case AFK_RESPONSE:
 			return config
-					.get(config.CATEGORY_GENERAL, "AFK Answer",
+					.get(config.CATEGORY_GENERAL,
+							"AFK Answer",
 							"I'm currently AFK and this is an automatic reply. I'll get back to you later, sorry",
-							"The AFK response")
-					.getString();
+							"The AFK response").getString();
 		case LOBBY_ENABLED:
 			return config
 					.get(config.CATEGORY_GENERAL, "Lobby button enabled",
@@ -105,6 +113,13 @@ public class ConfigurationHandler {
 							false,
 							"This can be set to true to automatically have the location HUD active on Hypixel.")
 					.getBoolean(false);
+		case FIRST_JOIN:
+			return config.get(
+					config.CATEGORY_GENERAL,
+					"Show introduction",
+					true,
+					"This can be set to decide whether or not to show the introduction on the next server join.")
+					.getBoolean(true);
 		default:
 			return null;
 		}

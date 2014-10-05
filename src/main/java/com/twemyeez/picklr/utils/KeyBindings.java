@@ -39,6 +39,9 @@ public class KeyBindings {
 
 	public static KeyBinding afk = new KeyBinding("AFK Key", Keyboard.KEY_K,
 			"Picklr");
+	
+	public static KeyBinding partyMode = new KeyBinding("Party mode", Keyboard.KEY_P,
+			"Picklr");
 
 	public static List<KeyBinding> pressedWithinTimeframe = new ArrayList<KeyBinding>();
 

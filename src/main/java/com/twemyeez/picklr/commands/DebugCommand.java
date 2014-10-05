@@ -3,12 +3,15 @@ package com.twemyeez.picklr.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import com.twemyeez.picklr.auth.SessionAuth;
 import com.twemyeez.picklr.forums.ForumProcessor;
 import com.twemyeez.picklr.friends.Friend;
 import com.twemyeez.picklr.friends.OnlineListManager;
 import com.twemyeez.picklr.radio.RadioUtils;
 import com.twemyeez.picklr.utils.CommonUtils;
+import com.twemyeez.picklr.utils.KeyBindings;
 
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -56,32 +59,7 @@ public class DebugCommand implements ICommand {
 	// Deal with the command processing
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		// Tell them the token
-		CommonUtils.sendFormattedChat(true, "Token: " + SessionAuth.getToken(),
-				EnumChatFormatting.BLUE, true);
-
-		// Check the forums are enabled
-		if (ForumProcessor.checkForumsEnabled()) {
-			// If they're enabled, send the alert
-			CommonUtils.sendFormattedChat(true,
-					ForumProcessor.getMessageNumberFromToken(),
-					EnumChatFormatting.GOLD, true);
-		} else {
-			// Otherwise, tell the user
-			CommonUtils.sendFormattedChat(true,
-					"[Forum] Please check your forum credentials.",
-					EnumChatFormatting.BLUE, true);
-		}
-
-		// Now work on displaying saved friends
-		CommonUtils.sendFormattedChat(true, "Detected the following friends:",
-				EnumChatFormatting.RED, true);
-		// Loop through friends
-		for (Friend friend : OnlineListManager.friends) {
-			// Display the friend and the status
-			CommonUtils.sendFormattedChat(true, friend.getName() + " is in a "
-					+ friend.getStatus(), EnumChatFormatting.BLUE, false);
-		}
+		new Thread(introduction).start();
 	}
 
 	// We are unlikely to have to sort this class, so we'll leave the
@@ -111,4 +89,124 @@ public class DebugCommand implements ICommand {
 	public boolean isUsernameIndex(String[] p_82358_1_, int p_82358_2_) {
 		return false;
 	}
+
+	public static Runnable introduction = new Runnable() {
+
+		@Override
+		public void run() {
+			try {
+				//Do an initial delay
+				Thread.sleep(2000);
+				// Tell them the token
+				CommonUtils.sendFormattedChat(true,
+						"Thank-you for using Picklr", EnumChatFormatting.BLUE,
+						true);
+				//Sleeps are used to spread the message over time, to make it less overwhelming
+				Thread.sleep(2000);
+				// Tell them the token
+				CommonUtils
+						.sendFormattedChat(
+								true,
+								"Press "
+										+ EnumChatFormatting.BLUE
+										+ Keyboard
+												.getKeyName(KeyBindings.friendList
+														.getKeyCode())
+										+ " to list your "
+										+ EnumChatFormatting.BLUE
+										+ "online "
+										+ EnumChatFormatting.BLUE
+										+ "friends. If you want to see their "
+										+ EnumChatFormatting.BLUE
+										+ "exact "
+										+ EnumChatFormatting.BLUE
+										+ "lobby, and whether they're AFK, do /picklrfind (username).",
+								EnumChatFormatting.AQUA, false);
+				Thread.sleep(6800);
+				CommonUtils
+						.sendFormattedChat(
+								true,
+								"You can play "
+										+ EnumChatFormatting.BLUE
+										+ "HypixelRadio by typing "
+										+ EnumChatFormatting.BLUE
+										+ "/radio and if you have it enabled, double press "
+										+ EnumChatFormatting.BLUE
+										+ Keyboard.getKeyName(KeyBindings.lobby
+												.getKeyCode())
+										+ " to lobby. Press "
+										+ EnumChatFormatting.BLUE
+										+ Keyboard
+												.getKeyName(KeyBindings.toggleLocationHud
+														.getKeyCode()) + " to "
+										+ EnumChatFormatting.BLUE
+										+ "display your "
+										+ EnumChatFormatting.BLUE + "current "
+										+ EnumChatFormatting.BLUE
+										+ "server in the corner of the screen.",
+								EnumChatFormatting.AQUA, false);
+				Thread.sleep(7800);
+				CommonUtils
+						.sendFormattedChat(
+								true,
+								"If you want to "
+										+ EnumChatFormatting.BLUE
+										+ "accept or "
+										+ EnumChatFormatting.BLUE
+										+ "deny all "
+										+ EnumChatFormatting.BLUE
+										+ "friend "
+										+ EnumChatFormatting.BLUE
+										+ "requests, you can do /bulkfriend accept or /bulkfriend deny. Be careful, because this will not ask you to confirm your action.",
+								EnumChatFormatting.AQUA, false);
+				Thread.sleep(7300);
+				CommonUtils
+						.sendFormattedChat(
+								true,
+								"Press "
+										+ EnumChatFormatting.BLUE
+										+ Keyboard.getKeyName(KeyBindings.afk
+												.getKeyCode())
+										+ " to go "
+										+ EnumChatFormatting.BLUE
+										+ "AFK. When you return and press "
+										+ EnumChatFormatting.BLUE
+										+ Keyboard.getKeyName(KeyBindings.afk
+												.getKeyCode())
+										+ " again, any /tell's which you received will be shown to you.",
+								EnumChatFormatting.AQUA, false);
+				Thread.sleep(7300);
+				CommonUtils.sendFormattedChat(
+						true,
+						"To automatically accept the first "
+								+ EnumChatFormatting.BLUE
+								+ "party "
+								+ EnumChatFormatting.BLUE
+								+ "invite you get, press "
+								+ EnumChatFormatting.BLUE
+								+ Keyboard.getKeyName(KeyBindings.partyMode
+										.getKeyCode())
+								+ EnumChatFormatting.AQUA
+								+ ". Type /hud to get an online friend hud",
+						EnumChatFormatting.AQUA, false);
+				Thread.sleep(7500);
+				CommonUtils
+						.sendFormattedChat(
+								true,
+								"If you want to get "
+										+ EnumChatFormatting.BLUE
+										+ "forum "
+										+ EnumChatFormatting.BLUE
+										+ "notifications in game, add your forum username and password to the config.",
+								EnumChatFormatting.AQUA, false);
+				Thread.sleep(6800);
+				CommonUtils.sendFormattedChat(true,
+						"To see this again, type /picklr",
+						EnumChatFormatting.AQUA, true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	};
 }

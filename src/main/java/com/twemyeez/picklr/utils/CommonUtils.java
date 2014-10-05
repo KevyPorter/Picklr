@@ -121,35 +121,44 @@ public class CommonUtils {
 	 */
 	public static void sendFormattedChat(Boolean doPrefix, String message,
 			EnumChatFormatting color, Boolean doAlertBars) {
-		// Forge has a tendency to lose colour between lines. Setting each space
-		// to include the colour code too solves this.
-		message = color + message.replace(" ", " " + color);
+		try {
+			// Forge has a tendency to lose colour between lines. Setting each
+			// space
+			// to include the colour code too solves this.
+			message = color + message.replace(" ", " " + color);
 
-		// Prepend the mod ID prefix if it's being used.
-		if (doPrefix) {
-			message = EnumChatFormatting.GRAY + "[" + EnumChatFormatting.BLUE
-					+ Picklr.MODID + EnumChatFormatting.GRAY + "] " + message;
-		}
+			// Prepend the mod ID prefix if it's being used.
+			if (doPrefix) {
+				message = EnumChatFormatting.GRAY + "["
+						+ EnumChatFormatting.BLUE + Picklr.MODID
+						+ EnumChatFormatting.GRAY + "] " + message;
+			}
 
-		// this is the alert bar string. It should just fill chat horizontally
-		String alertBar = EnumChatFormatting.AQUA
-				+ "-----------------------------------------------------";
+			// this is the alert bar string. It should just fill chat
+			// horizontally
+			String alertBar = EnumChatFormatting.AQUA
+					+ "-----------------------------------------------------";
 
-		// if they've enabled alert bars, then show one before the message
-		if (doAlertBars) {
+			// if they've enabled alert bars, then show one before the message
+			if (doAlertBars) {
+				Minecraft.getMinecraft().thePlayer
+						.addChatMessage(new ChatComponentText(alertBar));
+			}
+
+			// Send the message
 			Minecraft.getMinecraft().thePlayer
-					.addChatMessage(new ChatComponentText(alertBar));
-		}
+					.addChatMessage(new ChatComponentText(message));
 
-		// Send the message
-		Minecraft.getMinecraft().thePlayer
-				.addChatMessage(new ChatComponentText(message));
-
-		// if they've enabled alert bars, then show another one after the
-		// message
-		if (doAlertBars) {
-			Minecraft.getMinecraft().thePlayer
-					.addChatMessage(new ChatComponentText(alertBar));
+			// if they've enabled alert bars, then show another one after the
+			// message
+			if (doAlertBars) {
+				Minecraft.getMinecraft().thePlayer
+						.addChatMessage(new ChatComponentText(alertBar));
+			}
+		} catch (Exception e) {
+			// This often occurs if a player leaves but the mod still tries to
+			// send a message. Just print the stack trace
+			e.printStackTrace();
 		}
 	}
 
