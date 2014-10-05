@@ -34,11 +34,18 @@ public class InstallManager {
 					workingDirectory.length() - 1);
 		}
 
+		// If it doesn't end with a / then add it
+		if (!workingDirectory.endsWith("/") && !workingDirectory.endsWith("\\")) {
+			workingDirectory = workingDirectory + "/";
+		}
+
 		// Use a test file to see if libraries installed
 		File file = new File(workingDirectory + "mods/mp3spi1.9.5.jar");
 
 		// If the libraries are installed, return
 		if (file.exists()) {
+			System.out.println("Checking " + file.getAbsolutePath());
+			System.out.println("Target file exists, so not downloading API");
 			return;
 		}
 
