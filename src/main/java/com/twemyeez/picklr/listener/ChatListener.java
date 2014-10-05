@@ -97,6 +97,17 @@ public class ChatListener {
 
 			// Get the username
 			String nameJoined = message.split(" ")[0];
+			
+			if(nameJoined.equals(SessionAuth.getTargetUsername()))
+			{
+				//It is the API bot
+				
+				//Print to console
+				System.out.println(message);
+				
+				//Return
+				return;
+			}
 
 			// Create the chat style with click event
 			ChatStyle chatStyle = new ChatStyle()
