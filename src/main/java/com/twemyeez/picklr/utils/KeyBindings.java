@@ -15,6 +15,7 @@ import com.twemyeez.picklr.config.ConfigurationHandler;
 import com.twemyeez.picklr.config.ConfigurationHandler.ConfigAttribute;
 import com.twemyeez.picklr.friends.Friend;
 import com.twemyeez.picklr.friends.OnlineListManager;
+import com.twemyeez.picklr.listener.PartyInvite;
 import com.twemyeez.picklr.location.ServerLocationUtils;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -39,9 +40,9 @@ public class KeyBindings {
 
 	public static KeyBinding afk = new KeyBinding("AFK Key", Keyboard.KEY_K,
 			"Picklr");
-	
-	public static KeyBinding partyMode = new KeyBinding("Party mode", Keyboard.KEY_P,
-			"Picklr");
+
+	public static KeyBinding partyMode = new KeyBinding("Party mode",
+			Keyboard.KEY_P, "Picklr");
 
 	public static List<KeyBinding> pressedWithinTimeframe = new ArrayList<KeyBinding>();
 
@@ -60,6 +61,9 @@ public class KeyBindings {
 
 		// Register key binding for afk
 		ClientRegistry.registerKeyBinding(afk);
+
+		// Register key binding for party
+		ClientRegistry.registerKeyBinding(partyMode);
 	}
 
 	@SubscribeEvent
@@ -115,10 +119,24 @@ public class KeyBindings {
 			}
 
 		}
-		
-		if(afk.isPressed()){
-			//Handle the AFK event
+
+		if (afk.isPressed()) {
+			// Handle the AFK event
 			AFKHandler.setAfk(!AFKHandler.getAfK());
+		}
+
+		if (partyMode.isPressed()) {
+			// Deal with the party mode
+			// Check if they are on Hypixel
+			if (!CommonUtils.isHypixel()) {
+				CommonUtils.sendFormattedChat(true,
+						"You need to be on Hypixel to use this.",
+						EnumChatFormatting.RED, true);
+			} else {
+				// Toggle party mode
+				PartyInvite.togglePartyMode();
+			}
+
 		}
 
 		if (lobby.isPressed()) {

@@ -25,7 +25,7 @@ public class ChatListener {
 	 * This enum holds the various status's that can be used for chat
 	 */
 	public enum ChatStatus {
-		READY, WHEREAMI, FRIEND_GETTING_PAGE, FRIEND_LISTING, BACKGROUND_FRIEND, TOKEN_REQUEST, FRIEND_REQUEST_PROCESSING
+		READY, WHEREAMI, FRIEND_GETTING_PAGE, FRIEND_LISTING, BACKGROUND_FRIEND, TOKEN_REQUEST, FRIEND_REQUEST_PROCESSING, PARTY_INVITE
 	};
 
 	/*
@@ -71,6 +71,11 @@ public class ChatListener {
 		if (currentStatus.contains(ChatStatus.FRIEND_REQUEST_PROCESSING)) {
 			// Fire the method for friend request bulk processing if needed
 			BulkFriend.relatedChatEventHandler(event);
+		}
+		
+		if(currentStatus.contains(ChatStatus.PARTY_INVITE)){
+			//It might be a party invite so process it
+			PartyInvite.checkForPartyInvite(event);
 		}
 		
 		//See if they're AFK
