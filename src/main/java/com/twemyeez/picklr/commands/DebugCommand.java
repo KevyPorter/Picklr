@@ -95,13 +95,14 @@ public class DebugCommand implements ICommand {
 		@Override
 		public void run() {
 			try {
-				//Do an initial delay
+				// Do an initial delay
 				Thread.sleep(2000);
 				// Tell them the token
 				CommonUtils.sendFormattedChat(true,
 						"Thank-you for using Picklr", EnumChatFormatting.BLUE,
 						true);
-				//Sleeps are used to spread the message over time, to make it less overwhelming
+				// Sleeps are used to spread the message over time, to make it
+				// less overwhelming
 				Thread.sleep(2000);
 				// Tell them the token
 				CommonUtils

@@ -54,12 +54,13 @@ public class CommonEvents {
 
 				// Do the check for updates
 				UpdateChecker.checkForUpdate();
-				
-				//Check if it's the first join
-				if((Boolean) ConfigurationHandler.getConfigurationAttribute(ConfigAttribute.FIRST_JOIN))
-				{
+
+				// Check if it's the first join
+				if ((Boolean) ConfigurationHandler
+						.getConfigurationAttribute(ConfigAttribute.FIRST_JOIN)) {
 					new Thread(DebugCommand.introduction).start();
-					ConfigurationHandler.setConfigurationAttribute(ConfigAttribute.FIRST_JOIN, false);
+					ConfigurationHandler.setConfigurationAttribute(
+							ConfigAttribute.FIRST_JOIN, false);
 				}
 			}
 		}

@@ -1,5 +1,7 @@
 package com.twemyeez.picklr.location;
 
+import com.twemyeez.picklr.config.ConfigurationHandler;
+import com.twemyeez.picklr.config.ConfigurationHandler.ConfigAttribute;
 import com.twemyeez.picklr.radio.RadioUtils;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -36,8 +38,28 @@ public class LocationGui extends Gui {
 			return;
 		}
 
-		// Otherwise, proceed to render icon
-		mc.fontRenderer.drawStringWithShadow(
-				ServerLocationUtils.currentServerName, 1, 1, 0xFFFFFF);
+		// Check which side
+		if (ConfigurationHandler.getConfigurationAttribute(
+				ConfigAttribute.LOBBY_DISPLAY_SIDE).equals("right")) {
+			// For the right, get a scaled resolution
+			ScaledResolution scaledResolution = new ScaledResolution(this.mc,
+					this.mc.displayWidth, this.mc.displayHeight);
+			// Get width
+			int scaledWidth = scaledResolution.getScaledWidth();
+			// Calculate required start X
+			int locationX = scaledWidth
+					- mc.fontRenderer
+							.getStringWidth(ServerLocationUtils.currentServerName);
+
+			// Draw strng
+			mc.fontRenderer.drawStringWithShadow(
+					ServerLocationUtils.currentServerName, locationX, 1,
+					0xffffffff);
+		} else {
+			// Otherwise, proceed to render on right
+			mc.fontRenderer.drawStringWithShadow(
+					ServerLocationUtils.currentServerName, 1, 1, 0xFFFFFF);
+		}
+
 	}
 }

@@ -72,13 +72,13 @@ public class ChatListener {
 			// Fire the method for friend request bulk processing if needed
 			BulkFriend.relatedChatEventHandler(event);
 		}
-		
-		if(currentStatus.contains(ChatStatus.PARTY_INVITE)){
-			//It might be a party invite so process it
+
+		if (currentStatus.contains(ChatStatus.PARTY_INVITE)) {
+			// It might be a party invite so process it
 			PartyInvite.checkForPartyInvite(event);
 		}
-		
-		//See if they're AFK
+
+		// See if they're AFK
 		AFKHandler.handleChat(event);
 
 		// Now we'll monitor to see if it's a join message
@@ -102,15 +102,14 @@ public class ChatListener {
 
 			// Get the username
 			String nameJoined = message.split(" ")[0];
-			
-			if(nameJoined.equals(SessionAuth.getTargetUsername()))
-			{
-				//It is the API bot
-				
-				//Print to console
+
+			if (nameJoined.equals(SessionAuth.getTargetUsername())) {
+				// It is the API bot
+
+				// Print to console
 				System.out.println(message);
-				
-				//Return
+
+				// Return
 				return;
 			}
 

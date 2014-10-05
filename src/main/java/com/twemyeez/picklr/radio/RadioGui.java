@@ -11,7 +11,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
 public class RadioGui extends Gui {
-	String statusIndicator = EnumChatFormatting.DARK_AQUA + new String("♪")
+	String statusIndicator = EnumChatFormatting.DARK_AQUA + new String("Playing radio")
 			+ EnumChatFormatting.RESET;
 	private Minecraft mc;
 
