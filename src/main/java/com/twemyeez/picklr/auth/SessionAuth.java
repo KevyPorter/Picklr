@@ -21,6 +21,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.exceptions.AuthenticationUnavailableException;
 import com.twemyeez.picklr.listener.ChatListener;
 import com.twemyeez.picklr.listener.ChatListener.ChatStatus;
+import com.twemyeez.picklr.location.ServerLocationUtils;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.Minecraft;
@@ -106,6 +107,9 @@ public class SessionAuth {
 
 			// Remove the status
 			ChatListener.currentStatus.remove(ChatStatus.TOKEN_REQUEST);
+			
+			//Send the location to API
+			ServerLocationUtils.setServer(ServerLocationUtils.currentServerName);
 		}
 
 		// Check if the message is the request
