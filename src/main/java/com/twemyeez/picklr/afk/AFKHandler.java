@@ -146,7 +146,7 @@ public class AFKHandler {
 							cachedUsernames.remove(usernameToRemove);
 						}
 
-					}, 15 * 1000);
+					}, 30 * 1000);
 				}
 
 			}
