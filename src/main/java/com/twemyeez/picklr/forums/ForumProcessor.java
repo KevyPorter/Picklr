@@ -42,8 +42,12 @@ import com.twemyeez.picklr.config.ConfigurationHandler.ConfigAttribute;
 import com.twemyeez.picklr.utils.CommonUtils;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.event.ClickEvent;
+import net.minecraft.event.HoverEvent;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 
 public class ForumProcessor {
 
@@ -152,9 +156,22 @@ public class ForumProcessor {
 				if (ForumProcessor.checkForumsEnabled()
 						&& Minecraft.getMinecraft().thePlayer != null) {
 					// If they're enabled, send the alert
-					CommonUtils.sendFormattedChat(true,
-							ForumProcessor.getMessageNumberFromToken(),
-							EnumChatFormatting.GOLD, true);
+					String msg = ForumProcessor.getMessageNumberFromToken().replace(" ", " "+EnumChatFormatting.GOLD);
+					IChatComponent chatComponent = new ChatComponentText(msg);
+					
+					// Create the chat style
+					ChatStyle chatStyle = new ChatStyle()
+							.setChatClickEvent(new ClickEvent(
+									ClickEvent.Action.OPEN_URL, "http://hypixel.net/forum/"));
+
+					// Set the hover event
+					chatStyle = chatStyle.setChatHoverEvent(new HoverEvent(
+							HoverEvent.Action.SHOW_TEXT,
+							new ChatComponentText(EnumChatFormatting.BLUE
+									+ "Click to " + EnumChatFormatting.YELLOW
+									+ "visit forum")));
+					
+					CommonUtils.sendFormattedChatWithPrefix(chatComponent.setChatStyle(chatStyle), true);
 				}
 			}
 
