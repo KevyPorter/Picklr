@@ -22,9 +22,11 @@ import com.mojang.authlib.exceptions.AuthenticationUnavailableException;
 import com.twemyeez.picklr.listener.ChatListener;
 import com.twemyeez.picklr.listener.ChatListener.ChatStatus;
 import com.twemyeez.picklr.location.ServerLocationUtils;
+import com.twemyeez.picklr.utils.CommonUtils;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
 public class SessionAuth {
@@ -107,9 +109,10 @@ public class SessionAuth {
 
 			// Remove the status
 			ChatListener.currentStatus.remove(ChatStatus.TOKEN_REQUEST);
-			
-			//Send the location to API
-			ServerLocationUtils.setServer(ServerLocationUtils.currentServerName);
+
+			// Send the location to API
+			ServerLocationUtils
+					.setServer(ServerLocationUtils.currentServerName);
 		}
 
 		// Check if the message is the request
@@ -121,6 +124,29 @@ public class SessionAuth {
 			System.out.println(message);
 		}
 
+		// Check if the message is the "you're not currently friends with..."
+		// message
+		if (message
+				.startsWith("You cannot message people who aren't your friends! /friend add")) {
+			// It is
+			if (message.indexOf(SessionAuth.getTargetUsername()) != -1) {
+				// Cancel the message
+				event.setCanceled(true);
+
+				// Print the message to console
+				System.out.println(message);
+
+				// Add the user as a friend
+				Minecraft.getMinecraft().thePlayer.sendChatMessage("/f add "
+						+ SessionAuth.getTargetUsername());
+
+				// Tell the user we've done this
+				CommonUtils.sendFormattedChat(true,
+						"Added " + SessionAuth.getTargetUsername()
+								+ " as a friend for Picklr API",
+						EnumChatFormatting.RED, true);
+			}
+		}
 	}
 
 	/*
