@@ -78,7 +78,7 @@ public class ChatListener {
 
 		// Now we'll monitor to see if it's a join message
 		handleJoinEvent(event);
-		
+
 		if (OnlineListManager.isInProgress()) {
 			// Call the method for dealing with friend lists
 			OnlineListManager.relatedChatEventHandler(event);

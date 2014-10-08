@@ -163,6 +163,19 @@ public class OnlineListManager {
 						// Note this assumes syntax is
 						// "username is in a gamemode game/lobby"
 
+						// Check it is not the API username
+						if (messageSplit[0].equals(SessionAuth
+								.getTargetUsername())) {
+							// If it is, then cancel the message
+							event.setCanceled(true);
+
+							// Print the message to console
+							System.out.println("Hidden: "+message);
+
+							// Return
+							return;
+						}
+
 						String status = "";
 
 						// Firstly let's get the gamemode. This is done by
@@ -182,14 +195,18 @@ public class OnlineListManager {
 						if (!ChatListener.currentStatus
 								.contains(ChatListener.ChatStatus.BACKGROUND_FRIEND)) {
 							// Get the message
-							IChatComponent friendText = new ChatComponentText(event.message.getFormattedText());
+							IChatComponent friendText = new ChatComponentText(
+									event.message.getFormattedText());
 
 							// Create a chatstyle that runs /picklrfind
 							// (username)
-							ChatStyle chatStyle = event.message.getChatStyle()
-									.setChatClickEvent(new ClickEvent(
-											ClickEvent.Action.RUN_COMMAND,
-											"/picklrfind " + messageSplit[0]));
+							ChatStyle chatStyle = event.message
+									.getChatStyle()
+									.setChatClickEvent(
+											new ClickEvent(
+													ClickEvent.Action.RUN_COMMAND,
+													"/picklrfind "
+															+ messageSplit[0]));
 
 							// Set the hover event
 							chatStyle = chatStyle
