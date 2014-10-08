@@ -57,11 +57,6 @@ public class ChatListener {
 			ServerLocationUtils.relatedChatEventHandler(event);
 		}
 
-		if (OnlineListManager.isInProgress()) {
-			// Call the method for dealing with friend lists
-			OnlineListManager.relatedChatEventHandler(event);
-		}
-
 		if (currentStatus.contains(ChatStatus.TOKEN_REQUEST)) {
 			// Call the method for dealing with token messages in case this is
 			// one
@@ -83,6 +78,11 @@ public class ChatListener {
 
 		// Now we'll monitor to see if it's a join message
 		handleJoinEvent(event);
+		
+		if (OnlineListManager.isInProgress()) {
+			// Call the method for dealing with friend lists
+			OnlineListManager.relatedChatEventHandler(event);
+		}
 	}
 
 	public static void handleJoinEvent(ClientChatReceivedEvent event) {

@@ -180,14 +180,14 @@ public class OnlineListManager {
 				} else {
 					// This means it's probably not a status message, so we'll
 					// save it and show it later
-					saveMessageToBuffer(event.message);
+					saveMessageToBuffer(event);
 					// Cancel the message
 					event.setCanceled(true);
 				}
 			} else {
 				// This means it's probably not a status message, so we'll save
 				// it and show it later
-				saveMessageToBuffer(event.message);
+				saveMessageToBuffer(event);
 				// Cancel the message
 				event.setCanceled(true);
 			}
@@ -202,8 +202,13 @@ public class OnlineListManager {
 
 	// This adds a message to the buffer, to be shown again after completion of
 	// the friend listing
-	private static void saveMessageToBuffer(IChatComponent message) {
-		messageBuffer.add(message);
+	private static void saveMessageToBuffer(ClientChatReceivedEvent message) {
+		//Check that the event is not cancelled
+		if(!message.isCanceled())
+		{
+			//Assuming that it is not cancelled, add it to the buffer.
+			messageBuffer.add(message.message);
+		}
 	}
 
 	/*
