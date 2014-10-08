@@ -14,7 +14,10 @@ import com.twemyeez.picklr.listener.ChatListener.ChatStatus;
 import com.twemyeez.picklr.utils.CommonUtils;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.event.ClickEvent;
+import net.minecraft.event.HoverEvent;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -172,6 +175,39 @@ public class OnlineListManager {
 						friends.add(new Friend(messageSplit[0], event.message
 								.getFormattedText().split(" ")[0], status));
 
+						// Cancel the message
+						event.setCanceled(true);
+
+						// Cancel if it's meant to be in the background
+						if (!ChatListener.currentStatus
+								.contains(ChatListener.ChatStatus.BACKGROUND_FRIEND)) {
+							// Get the message
+							IChatComponent friendText = new ChatComponentText(event.message.getFormattedText());
+
+							// Create a chatstyle that runs /picklrfind
+							// (username)
+							ChatStyle chatStyle = event.message.getChatStyle()
+									.setChatClickEvent(new ClickEvent(
+											ClickEvent.Action.RUN_COMMAND,
+											"/picklrfind " + messageSplit[0]));
+
+							// Set the hover event
+							chatStyle = chatStyle
+									.setChatHoverEvent(new HoverEvent(
+											HoverEvent.Action.SHOW_TEXT,
+											new ChatComponentText(
+													EnumChatFormatting.BLUE
+															+ "Click to "
+															+ EnumChatFormatting.YELLOW
+															+ "view more info on "
+															+ messageSplit[0])));
+
+							// Send the new message
+							Minecraft.getMinecraft().thePlayer
+									.addChatComponentMessage(friendText
+											.setChatStyle(chatStyle));
+						}
+
 					} else {
 						// If the fourth word is "offline" it means they're
 						// offline, so we hide them
@@ -192,21 +228,15 @@ public class OnlineListManager {
 				event.setCanceled(true);
 			}
 
-			// Cancel if it's meant to be in the background
-			if (ChatListener.currentStatus
-					.contains(ChatListener.ChatStatus.BACKGROUND_FRIEND)) {
-				event.setCanceled(true);
-			}
 		}
 	}
 
 	// This adds a message to the buffer, to be shown again after completion of
 	// the friend listing
 	private static void saveMessageToBuffer(ClientChatReceivedEvent message) {
-		//Check that the event is not cancelled
-		if(!message.isCanceled())
-		{
-			//Assuming that it is not cancelled, add it to the buffer.
+		// Check that the event is not cancelled
+		if (!message.isCanceled()) {
+			// Assuming that it is not cancelled, add it to the buffer.
 			messageBuffer.add(message.message);
 		}
 	}
