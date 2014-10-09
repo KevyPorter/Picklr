@@ -1,5 +1,8 @@
 package com.twemyeez.picklr.utils;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,19 +52,29 @@ public class CommonEvents {
 				// dialogue too often.
 				lastGuiShow = System.currentTimeMillis();
 
-				// This implies it is a server change
-				ServerLocationUtils.sendServer();
+				// Create the runnable
+				TimerTask timerTask = (new TimerTask() {
 
-				// Do the check for updates
-				UpdateChecker.checkForUpdate();
+					@Override
+					public void run() {
+						// This implies it is a server change
+						ServerLocationUtils.sendServer();
 
-				// Check if it's the first join
-				if ((Boolean) ConfigurationHandler
-						.getConfigurationAttribute(ConfigAttribute.FIRST_JOIN)) {
-					new Thread(DebugCommand.introduction).start();
-					ConfigurationHandler.setConfigurationAttribute(
-							ConfigAttribute.FIRST_JOIN, false);
-				}
+						// Do the check for updates
+						UpdateChecker.checkForUpdate();
+
+						// Check if it's the first join
+						if ((Boolean) ConfigurationHandler
+								.getConfigurationAttribute(ConfigAttribute.FIRST_JOIN)) {
+							new Thread(DebugCommand.introduction).start();
+							ConfigurationHandler.setConfigurationAttribute(
+									ConfigAttribute.FIRST_JOIN, false);
+						}
+					}
+				});
+
+				// Run it in 2 seconds
+				new Timer().schedule(timerTask, 2000l);
 			}
 		}
 	}

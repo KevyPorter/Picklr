@@ -170,7 +170,7 @@ public class OnlineListManager {
 							event.setCanceled(true);
 
 							// Print the message to console
-							System.out.println("Hidden: "+message);
+							System.out.println("Hidden: " + message);
 
 							// Return
 							return;
