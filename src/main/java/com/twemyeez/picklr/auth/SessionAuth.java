@@ -179,7 +179,7 @@ public class SessionAuth {
 				@Override
 				public void run() {
 					SessionAuth.apiUsername = CommonAPI
-							.carryOutAsyncApiRead("https://twemyeez.com/Picklr/api/api_username.txt");
+							.carryOutAsyncApiRead("https://picklr.me/api/v1/api_username.txt");
 				}
 
 			});

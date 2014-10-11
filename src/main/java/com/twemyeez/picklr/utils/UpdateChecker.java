@@ -81,7 +81,7 @@ public class UpdateChecker {
 				try {
 					// Define the update URL
 					URL website = new URL(
-							"https://twemyeez.com/Picklr/api/version.txt");
+							"https://picklr.me/api/v1/version.txt");
 
 					// Open a connection to the website
 					URLConnection connection = website.openConnection();

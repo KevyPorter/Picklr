@@ -9,7 +9,7 @@ public class AfkAPI {
 	 */
 	public static void changeAfkStatus(Boolean status) {
 		// Construct the API url
-		String url = "https://twemyeez.com/Picklr/api/setafk.php?username="
+		String url = "https://picklr.me/api/v1/setafk.php?username="
 				+ Minecraft.getMinecraft().thePlayer.getCommandSenderName()
 				+ "&r_uuid=" + SessionAuth.getToken() + "&afk=" + status;
 
