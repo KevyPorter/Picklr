@@ -53,7 +53,7 @@ public class InstallManager {
 		try {
 
 			String location = CommonAPI
-					.carryOutAsyncApiRead("https://picklr.me/api/v1/library_location.txt");
+					.carryOutAsyncApiRead("http://picklr.me/api/v1/library_location.txt");
 
 			// Define the URL
 			URL url = new URL(location);

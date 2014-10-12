@@ -80,7 +80,7 @@ public class Friend {
 					skin = File.createTempFile(username, ".png");
 					// Download the head preview
 					FileUtils.copyURLToFile(new URL(
-							"https://www.twemyeez.com/Picklr/skin.php?u="
+							"http://www.twemyeez.com/Picklr/skin.php?u="
 									+ username + "&s=80"), skin);
 					// Indicate the texture is now downloaded
 					textureDownloaded = true;

@@ -38,7 +38,7 @@ public class LocateFriend implements ICommand {
 			@Override
 			public void run() {
 				// Construct the API url
-				String url = "https://picklr.me/api/v1/locate.php?username="
+				String url = "http://picklr.me/api/v1/locate.php?username="
 						+ Minecraft.getMinecraft().thePlayer
 								.getCommandSenderName()
 						+ "&r_uuid="
@@ -52,7 +52,7 @@ public class LocateFriend implements ICommand {
 				String location = CommonAPI.carryOutAsyncApiRead(url);
 
 				// Construct the API url
-				url = "https://picklr.me/api/v1/afk.php?username="
+				url = "http://picklr.me/api/v1/afk.php?username="
 						+ Minecraft.getMinecraft().thePlayer
 								.getCommandSenderName() + "&r_uuid="
 						+ SessionAuth.getToken() + "&target=" + username;

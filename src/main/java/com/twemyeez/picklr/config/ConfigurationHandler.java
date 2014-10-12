@@ -71,7 +71,7 @@ public class ConfigurationHandler {
 					.getString();
 		case DO_API:
 			return config
-					.get(config.CATEGORY_GENERAL, "Add API Bot", "true",
+					.get(config.CATEGORY_GENERAL, "Add API Bot", true,
 							"Whether or not to add the API bot as a friend for Picklr finding features")
 					.getBoolean(true);
 		case AFK_RESPONSE_ENABLED:

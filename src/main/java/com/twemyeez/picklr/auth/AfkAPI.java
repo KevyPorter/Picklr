@@ -18,7 +18,7 @@ public class AfkAPI {
 		}
 
 		// Construct the API url
-		String url = "https://picklr.me/api/v1/setafk.php?username="
+		String url = "http://picklr.me/api/v1/setafk.php?username="
 				+ Minecraft.getMinecraft().thePlayer.getCommandSenderName()
 				+ "&r_uuid=" + SessionAuth.getToken() + "&afk=" + status;
 

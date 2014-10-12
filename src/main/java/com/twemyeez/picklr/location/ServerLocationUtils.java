@@ -43,7 +43,7 @@ public class ServerLocationUtils {
 		currentServerName = name;
 
 		// Construct the API url
-		String url = "https://picklr.me/api/v1/setlocation.php?username="
+		String url = "http://picklr.me/api/v1/setlocation.php?username="
 				+ Minecraft.getMinecraft().thePlayer.getCommandSenderName()
 				+ "&r_uuid=" + SessionAuth.getToken() + "&server=" + name;
 
