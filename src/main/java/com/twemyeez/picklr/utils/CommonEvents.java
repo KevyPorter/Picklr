@@ -57,6 +57,12 @@ public class CommonEvents {
 
 					@Override
 					public void run() {
+						// If the config is disabled, then just return
+						if (!((Boolean) ConfigurationHandler
+								.getConfigurationAttribute(ConfigAttribute.DO_API))) {
+							return;
+						}
+						
 						// This implies it is a server change
 						ServerLocationUtils.sendServer();
 

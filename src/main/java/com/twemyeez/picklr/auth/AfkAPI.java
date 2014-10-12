@@ -1,5 +1,8 @@
 package com.twemyeez.picklr.auth;
 
+import com.twemyeez.picklr.config.ConfigurationHandler;
+import com.twemyeez.picklr.config.ConfigurationHandler.ConfigAttribute;
+
 import net.minecraft.client.Minecraft;
 
 public class AfkAPI {
@@ -8,6 +11,12 @@ public class AfkAPI {
 	 * changed
 	 */
 	public static void changeAfkStatus(Boolean status) {
+		// If the config is disabled, then just return
+		if (!((Boolean) ConfigurationHandler
+				.getConfigurationAttribute(ConfigAttribute.DO_API))) {
+			return;
+		}
+
 		// Construct the API url
 		String url = "https://picklr.me/api/v1/setafk.php?username="
 				+ Minecraft.getMinecraft().thePlayer.getCommandSenderName()

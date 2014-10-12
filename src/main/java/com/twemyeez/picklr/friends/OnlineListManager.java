@@ -8,6 +8,8 @@ import java.util.TimerTask;
 import com.twemyeez.picklr.Picklr;
 import com.twemyeez.picklr.auth.CommonAPI;
 import com.twemyeez.picklr.auth.SessionAuth;
+import com.twemyeez.picklr.config.ConfigurationHandler;
+import com.twemyeez.picklr.config.ConfigurationHandler.ConfigAttribute;
 import com.twemyeez.picklr.hud.FriendOnlineHud;
 import com.twemyeez.picklr.listener.ChatListener;
 import com.twemyeez.picklr.listener.ChatListener.ChatStatus;
@@ -197,6 +199,19 @@ public class OnlineListManager {
 							// Get the message
 							IChatComponent friendText = new ChatComponentText(
 									event.message.getFormattedText());
+
+							// If the config is disabled, then just return and
+							// print the standard message
+							if (!((Boolean) ConfigurationHandler
+									.getConfigurationAttribute(ConfigAttribute.DO_API))) {
+								// Send message
+								Minecraft.getMinecraft().thePlayer
+										.addChatComponentMessage(friendText
+												.setChatStyle(event.message
+														.getChatStyle()));
+								// Return
+								return;
+							}
 
 							// Create a chatstyle that runs /picklrfind
 							// (username)

@@ -40,48 +40,58 @@ public class ChatListener {
 	 */
 	@SubscribeEvent
 	public void ClientChatReceivedEvent(ClientChatReceivedEvent event) {
+		// We cannot risk crashing, so use a try...catch
+		try {
+			// Check the message isn't null and that they're not on another
+			// server
+			if (event.message == null || !CommonUtils.isHypixel()) {
+				return;
+			}
 
-		// Check the message isn't null and that they're not on another server
-		if (event.message == null || !CommonUtils.isHypixel()) {
-			return;
-		}
+			/*
+			 * We now check the active status(s) and then fire their relevant
+			 * event handlers
+			 */
 
-		/*
-		 * We now check the active status(s) and then fire their relevant event
-		 * handlers
-		 */
+			if (currentStatus.contains(ChatStatus.WHEREAMI)) {
+				// Call the method for dealing with whereami messages in case
+				// this
+				// is one
+				ServerLocationUtils.relatedChatEventHandler(event);
+			}
 
-		if (currentStatus.contains(ChatStatus.WHEREAMI)) {
-			// Call the method for dealing with whereami messages in case this
-			// is one
-			ServerLocationUtils.relatedChatEventHandler(event);
-		}
+			if (currentStatus.contains(ChatStatus.TOKEN_REQUEST)) {
+				// Call the method for dealing with token messages in case this
+				// is
+				// one
+				SessionAuth.relatedChatEventHandler(event);
+			}
 
-		if (currentStatus.contains(ChatStatus.TOKEN_REQUEST)) {
-			// Call the method for dealing with token messages in case this is
-			// one
-			SessionAuth.relatedChatEventHandler(event);
-		}
+			if (currentStatus.contains(ChatStatus.FRIEND_REQUEST_PROCESSING)) {
+				// Fire the method for friend request bulk processing if needed
+				BulkFriend.relatedChatEventHandler(event);
+			}
 
-		if (currentStatus.contains(ChatStatus.FRIEND_REQUEST_PROCESSING)) {
-			// Fire the method for friend request bulk processing if needed
-			BulkFriend.relatedChatEventHandler(event);
-		}
+			if (currentStatus.contains(ChatStatus.PARTY_INVITE)) {
+				// It might be a party invite so process it
+				PartyInvite.checkForPartyInvite(event);
+			}
 
-		if (currentStatus.contains(ChatStatus.PARTY_INVITE)) {
-			// It might be a party invite so process it
-			PartyInvite.checkForPartyInvite(event);
-		}
+			// See if they're AFK
+			AFKHandler.handleChat(event);
 
-		// See if they're AFK
-		AFKHandler.handleChat(event);
+			// Now we'll monitor to see if it's a join message
+			handleJoinEvent(event);
 
-		// Now we'll monitor to see if it's a join message
-		handleJoinEvent(event);
-
-		if (OnlineListManager.isInProgress()) {
-			// Call the method for dealing with friend lists
-			OnlineListManager.relatedChatEventHandler(event);
+			if (OnlineListManager.isInProgress()) {
+				// Call the method for dealing with friend lists
+				OnlineListManager.relatedChatEventHandler(event);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			CommonUtils.sendFormattedChat(true,
+					"An error occured. Please report this.",
+					EnumChatFormatting.DARK_RED, false);
 		}
 	}
 

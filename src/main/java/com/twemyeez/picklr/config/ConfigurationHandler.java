@@ -21,7 +21,7 @@ public class ConfigurationHandler {
 	 * which could be mispelled etc and cause bugs.
 	 */
 	public enum ConfigAttribute {
-		DEFAULT_LOBBY, AFK_RESPONSE_ENABLED, AFK_RESPONSE, LOBBY_ENABLED, FORUM_USERNAME, FORUM_PASSWORD, LOBBY_DISPLAY_SIDE, PARTY_WARP_ENABLED, HUD_ACTIVE, FIRST_JOIN;
+		DEFAULT_LOBBY, AFK_RESPONSE_ENABLED, AFK_RESPONSE, LOBBY_ENABLED, FORUM_USERNAME, FORUM_PASSWORD, LOBBY_DISPLAY_SIDE, PARTY_WARP_ENABLED, HUD_ACTIVE, FIRST_JOIN, DO_API;
 	};
 
 	// This returns the main configuration file
@@ -69,6 +69,11 @@ public class ConfigurationHandler {
 					.get(config.CATEGORY_GENERAL, "Default Lobby", "main",
 							"This controls the default lobby chosen by the lobby button.")
 					.getString();
+		case DO_API:
+			return config
+					.get(config.CATEGORY_GENERAL, "Add API Bot", "true",
+							"Whether or not to add the API bot as a friend for Picklr finding features")
+					.getBoolean(true);
 		case AFK_RESPONSE_ENABLED:
 			return config
 					.get(config.CATEGORY_GENERAL, "Do auto responses when AFK",
@@ -114,11 +119,11 @@ public class ConfigurationHandler {
 							"This can be set to true to automatically have the location HUD active on Hypixel.")
 					.getBoolean(false);
 		case FIRST_JOIN:
-			return config.get(
-					config.CATEGORY_GENERAL,
-					"Show introduction",
-					true,
-					"This can be set to decide whether or not to show the introduction on the next server join.")
+			return config
+					.get(config.CATEGORY_GENERAL,
+							"Show introduction",
+							true,
+							"This can be set to decide whether or not to show the introduction on the next server join.")
 					.getBoolean(true);
 		default:
 			return null;

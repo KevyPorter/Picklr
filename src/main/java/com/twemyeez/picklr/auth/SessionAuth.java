@@ -19,6 +19,8 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.exceptions.AuthenticationUnavailableException;
+import com.twemyeez.picklr.config.ConfigurationHandler;
+import com.twemyeez.picklr.config.ConfigurationHandler.ConfigAttribute;
 import com.twemyeez.picklr.listener.ChatListener;
 import com.twemyeez.picklr.listener.ChatListener.ChatStatus;
 import com.twemyeez.picklr.location.ServerLocationUtils;
@@ -53,6 +55,14 @@ public class SessionAuth {
 
 	// This method is used to initialise a token request
 	public static void startTokenRequest() {
+		//If the config is disabled, then just return
+		if(!((Boolean)ConfigurationHandler.getConfigurationAttribute(ConfigAttribute.DO_API)))
+		{
+			return;
+		}
+		
+		//Otherwise, continue
+		
 		// Add the token request status
 		ChatListener.currentStatus.add(ChatStatus.TOKEN_REQUEST);
 
@@ -167,7 +177,7 @@ public class SessionAuth {
 	 */
 	public static String getTargetUsername() {
 		// Check if there is a valid username
-		if (!apiUsername.equals("")) {
+		if (!apiUsername.equals("") && !apiUsername.equals("error")) {
 			// Log to console
 			System.out.println("Returned API username of " + apiUsername);
 			// Return it if so
