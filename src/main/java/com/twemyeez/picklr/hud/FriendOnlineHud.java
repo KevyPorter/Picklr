@@ -81,14 +81,23 @@ public class FriendOnlineHud extends Gui {
 		}
 	}
 
+	// A quick fix for the ConcurrentModificationException is to block changing
+	// the buffer
+	// if we're iterating through it
+	public static Boolean lockList = false;
+
 	// This is used to set the friend buffer to a copy of the other array
 	public static void setFriendBuffer(List<Friend> targetList) {
 		try {
+			// Updates are not urgent, so we can afford to just return if it
+			// would cause issues
+			if (lockList) {
+				return;
+			}
+
 			// Save the current friend
 			Friend playerTemoraryBuffer = friendBuffer.get(currentI);
 
-			// Clear the buffer
-			friendBuffer.clear();
 			// Copy
 			friendBuffer = new ArrayList<Friend>(targetList);
 
@@ -100,6 +109,7 @@ public class FriendOnlineHud extends Gui {
 			if (newIteratorLocation != -1) {
 				currentI = newIteratorLocation;
 			}
+
 		} catch (Exception e) {
 			// This probably means the list was empty
 
@@ -192,6 +202,9 @@ public class FriendOnlineHud extends Gui {
 			return;
 		}
 
+		// Indicate we're operating on the List
+		lockList = true;
+
 		// First let's check we can draw them by checking the images are loaded
 
 		// Default is that they're ready to draw
@@ -261,6 +274,9 @@ public class FriendOnlineHud extends Gui {
 			}
 
 		}
+
+		// Now allow list operations again
+		lockList = false;
 	}
 
 	// This handles the starting of the increment timer
