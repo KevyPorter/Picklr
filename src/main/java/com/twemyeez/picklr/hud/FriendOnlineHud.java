@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.imageio.ImageIO;
 import org.apache.commons.io.FileUtils;
 import org.lwjgl.opengl.GL11;
@@ -81,20 +82,13 @@ public class FriendOnlineHud extends Gui {
 		}
 	}
 
-	// A quick fix for the ConcurrentModificationException is to block changing
-	// the buffer
-	// if we're iterating through it
-	public static Boolean lockList = false;
+    private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
 	// This is used to set the friend buffer to a copy of the other array
 	public static void setFriendBuffer(List<Friend> targetList) {
+        // Properly lock
+        lock.writeLock().lock();
 		try {
-			// Updates are not urgent, so we can afford to just return if it
-			// would cause issues
-			if (lockList) {
-				return;
-			}
-
 			// Save the current friend
 			Friend playerTemoraryBuffer = friendBuffer.get(currentI);
 
@@ -117,8 +111,10 @@ public class FriendOnlineHud extends Gui {
 			friendBuffer.clear();
 			// Copy
 			friendBuffer = new ArrayList<Friend>(targetList);
-		}
-	}
+		} finally {
+            lock.writeLock().unlock();
+        }
+    }
 
 	// This renders a username at a certain location
 	public void render(Minecraft minecraft, double d, String username) {
@@ -202,81 +198,82 @@ public class FriendOnlineHud extends Gui {
 			return;
 		}
 
-		// Indicate we're operating on the List
-		lockList = true;
+        // Stop people from editing our list while we're reading it
+        lock.readLock().lock();
+        try {
+            // First let's check we can draw them by checking the images are loaded
 
-		// First let's check we can draw them by checking the images are loaded
+            // Default is that they're ready to draw
+            Boolean ready = true;
 
-		// Default is that they're ready to draw
-		Boolean ready = true;
+            // If there are no friends, we can't draw them
+            if (friendBuffer.size() == 0) {
+                ready = false;
+            }
 
-		// If there are no friends, we can't draw them
-		if (friendBuffer.size() == 0) {
-			ready = false;
-		}
+            // Now loop through friends
+            Iterator<Friend> itr = friendBuffer.iterator();
+            while (itr.hasNext()) {
+                // Check if their texture has downloaded
+                if (!itr.next().isTextureLoaded()) {
+                    // If their texture isn't loaded, then change the value of ready
+                    // to false
+                    ready = false;
+                }
+            }
 
-		// Now loop through friends
-		Iterator<Friend> itr = friendBuffer.iterator();
-		while (itr.hasNext()) {
-			// Check if their texture has downloaded
-			if (!itr.next().isTextureLoaded()) {
-				// If their texture isn't loaded, then change the value of ready
-				// to false
-				ready = false;
-			}
-		}
+            // Calculate the drawing start point
+            double startDouble = 4 * 12.5;
+            int start = (int) Math.round(startDouble);
 
-		// Calculate the drawing start point
-		double startDouble = 4 * 12.5;
-		int start = (int) Math.round(startDouble);
+            // Now check if we're ready to render
+            if (ready) {
+                // Check if we've already started the list
+                if (!startedList) {
+                    // If we haven't started friend listing, start the timer to
+                    // increment the position
+                    FriendOnlineHud.startTimer();
+                }
 
-		// Now check if we're ready to render
-		if (ready) {
-			// Check if we've already started the list
-			if (!startedList) {
-				// If we haven't started friend listing, start the timer to
-				// increment the position
-				FriendOnlineHud.startTimer();
-			}
+                // Indicate that we've now started the list
+                startedList = true;
 
-			// Indicate that we've now started the list
-			startedList = true;
+                // Set the increment to 0
+                int i = 0;
+                // Loop through all friends
+                Iterator<Friend> friendIterator = friendBuffer.iterator();
+                // Keep going while there are more
+                while (friendIterator.hasNext()) {
+                    // Get the next iteration
+                    Friend friend = friendIterator.next();
+                    // Check the position of the friend
+                    if (i == currentI) {
+                        // If the value of the user's position is equal to the one
+                        // we need to emphasise then draw them
+                        friend.drawHead(0, 1 * 25 + start, 26, 26);
+                        // Also draw their username
+                        render(mc, 1 * 25 + start + 13,
+                                friend.getFormattedUsername());
+                    } else if (i == currentI + 1) {
+                        // If the value of the user's position is above to the one
+                        // we need to emphasise by 1 then draw them smaller and
+                        // above
+                        friend.drawHead(0, 1 * 25 + start + 36, 10, 10);
+                    } else if (i == currentI - 1) {
+                        // If the value of the user's position is 1 below the one we
+                        // need to emphasise draw them smaller below
+                        friend.drawHead(0, 1 * 25 + start - 20, 10, 10);
+                    }
 
-			// Set the increment to 0
-			int i = 0;
-			// Loop through all friends
-			Iterator<Friend> friendIterator = friendBuffer.iterator();
-			// Keep going while there are more
-			while (friendIterator.hasNext()) {
-				// Get the next iteration
-				Friend friend = friendIterator.next();
-				// Check the position of the friend
-				if (i == currentI) {
-					// If the value of the user's position is equal to the one
-					// we need to emphasise then draw them
-					friend.drawHead(0, 1 * 25 + start, 26, 26);
-					// Also draw their username
-					render(mc, 1 * 25 + start + 13,
-							friend.getFormattedUsername());
-				} else if (i == currentI + 1) {
-					// If the value of the user's position is above to the one
-					// we need to emphasise by 1 then draw them smaller and
-					// above
-					friend.drawHead(0, 1 * 25 + start + 36, 10, 10);
-				} else if (i == currentI - 1) {
-					// If the value of the user's position is 1 below the one we
-					// need to emphasise draw them smaller below
-					friend.drawHead(0, 1 * 25 + start - 20, 10, 10);
-				}
+                    // Increment the position
+                    i++;
+                }
 
-				// Increment the position
-				i++;
-			}
-
-		}
-
-		// Now allow list operations again
-		lockList = false;
+            }
+        } finally {
+            // Now allow list operations again
+            lock.writeLock().unlock();
+        }
 	}
 
 	// This handles the starting of the increment timer
