@@ -13,8 +13,6 @@ import com.twemyeez.picklr.Picklr;
 import com.twemyeez.picklr.afk.AFKHandler;
 import com.twemyeez.picklr.config.ConfigurationHandler;
 import com.twemyeez.picklr.config.ConfigurationHandler.ConfigAttribute;
-import com.twemyeez.picklr.friends.Friend;
-import com.twemyeez.picklr.friends.OnlineListManager;
 import com.twemyeez.picklr.listener.PartyInvite;
 import com.twemyeez.picklr.location.ServerLocationUtils;
 
@@ -26,10 +24,7 @@ import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 
 public class KeyBindings {
-	public static KeyBinding friendList = new KeyBinding("Friends list",
-			Keyboard.KEY_F, "Picklr");
-
-	public static KeyBinding toggleLocationHud = new KeyBinding("Location HUD",
+	static KeyBinding toggleLocationHud = new KeyBinding("Location HUD",
 			Keyboard.KEY_V, "Picklr");
 
 	public static KeyBinding changeRightClickActionToAdd = new KeyBinding(
@@ -47,8 +42,6 @@ public class KeyBindings {
 	public static List<KeyBinding> pressedWithinTimeframe = new ArrayList<KeyBinding>();
 
 	public KeyBindings() {
-		// Register the friend list key binding
-		ClientRegistry.registerKeyBinding(friendList);
 
 		// Register the server HUD key binding
 		ClientRegistry.registerKeyBinding(toggleLocationHud);
@@ -72,18 +65,7 @@ public class KeyBindings {
 		 * There's been a key input event, so let's check what's been pressed
 		 */
 
-		// For the online friend list, if the key is pressed, we run the friend
-		// list function
-		if (friendList.isPressed()) {
-			// Check if they are on Hypixel
-			if (!CommonUtils.isHypixel()) {
-				CommonUtils.sendFormattedChat(true,
-						"You need to be on Hypixel to use this.",
-						EnumChatFormatting.RED, true);
-			} else {
-				OnlineListManager.runFriendList();
-			}
-		}
+		
 
 		if (toggleLocationHud.isPressed()) {
 			// Check if they are on Hypixel

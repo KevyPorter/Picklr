@@ -4,14 +4,10 @@ import java.io.IOException;
 
 import com.twemyeez.picklr.Picklr;
 import com.twemyeez.picklr.commands.BulkFriend;
-import com.twemyeez.picklr.commands.DebugCommand;
-import com.twemyeez.picklr.commands.HudToggle;
-import com.twemyeez.picklr.commands.LocateFriend;
 import com.twemyeez.picklr.commands.RadioToggle;
 import com.twemyeez.picklr.commands.RadioVolume;
 import com.twemyeez.picklr.config.ConfigurationHandler;
 import com.twemyeez.picklr.forums.ForumProcessor;
-import com.twemyeez.picklr.hud.FriendOnlineHud;
 import com.twemyeez.picklr.listener.ChatListener;
 import com.twemyeez.picklr.location.LocationGui;
 import com.twemyeez.picklr.location.ServerLocationUtils;
@@ -48,10 +44,6 @@ public class CommonUtils {
 		// Register the chat event handler
 		MinecraftForge.EVENT_BUS.register(new ChatListener());
 
-		// Register GUI overlay
-		MinecraftForge.EVENT_BUS.register(new FriendOnlineHud(Minecraft
-				.getMinecraft()));
-
 		// Register Radio Gui overlay
 		MinecraftForge.EVENT_BUS
 				.register(new RadioGui(Minecraft.getMinecraft()));
@@ -60,20 +52,11 @@ public class CommonUtils {
 		MinecraftForge.EVENT_BUS.register(new LocationGui(Minecraft
 				.getMinecraft()));
 
-		// register the /debug command which does session checking
-		ClientCommandHandler.instance.registerCommand(new DebugCommand());
-
 		// register the /volume command used to adjust radio volume
 		ClientCommandHandler.instance.registerCommand(new RadioVolume());
 
 		// register the /radio command which toggles radio on and off
 		ClientCommandHandler.instance.registerCommand(new RadioToggle());
-
-		// register the /picklrfind command which lets people find friends
-		ClientCommandHandler.instance.registerCommand(new LocateFriend());
-
-		// register the /hud command which toggles friend HUD on and off
-		ClientCommandHandler.instance.registerCommand(new HudToggle());
 
 		// register the /bulkfriend command which processes or denies all friend
 		// requests

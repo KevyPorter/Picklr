@@ -19,8 +19,6 @@ import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 
 import com.twemyeez.picklr.Picklr;
-import com.twemyeez.picklr.auth.SessionAuth;
-import com.twemyeez.picklr.commands.DebugCommand;
 import com.twemyeez.picklr.config.ConfigurationHandler;
 import com.twemyeez.picklr.config.ConfigurationHandler.ConfigAttribute;
 import com.twemyeez.picklr.location.ServerLocationUtils;
@@ -72,7 +70,7 @@ public class CommonEvents {
 						// Check if it's the first join
 						if ((Boolean) ConfigurationHandler
 								.getConfigurationAttribute(ConfigAttribute.FIRST_JOIN)) {
-							new Thread(DebugCommand.introduction).start();
+						
 							ConfigurationHandler.setConfigurationAttribute(
 									ConfigAttribute.FIRST_JOIN, false);
 						}

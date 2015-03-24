@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.twemyeez.picklr.afk.AFKHandler;
-import com.twemyeez.picklr.auth.SessionAuth;
 import com.twemyeez.picklr.commands.BulkFriend;
-import com.twemyeez.picklr.friends.OnlineListManager;
 import com.twemyeez.picklr.location.ServerLocationUtils;
 import com.twemyeez.picklr.utils.CommonUtils;
 
@@ -60,13 +58,7 @@ public class ChatListener {
 				ServerLocationUtils.relatedChatEventHandler(event);
 			}
 
-			if (currentStatus.contains(ChatStatus.TOKEN_REQUEST)) {
-				// Call the method for dealing with token messages in case this
-				// is
-				// one
-				SessionAuth.relatedChatEventHandler(event);
-			}
-
+	
 			if (currentStatus.contains(ChatStatus.FRIEND_REQUEST_PROCESSING)) {
 				// Fire the method for friend request bulk processing if needed
 				BulkFriend.relatedChatEventHandler(event);
@@ -83,10 +75,7 @@ public class ChatListener {
 			// Now we'll monitor to see if it's a join message
 			handleJoinEvent(event);
 
-			if (OnlineListManager.isInProgress()) {
-				// Call the method for dealing with friend lists
-				OnlineListManager.relatedChatEventHandler(event);
-			}
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 			CommonUtils.sendFormattedChat(true,
@@ -113,16 +102,7 @@ public class ChatListener {
 			// Get the username
 			String nameJoined = message.split(" ")[0];
 
-			if (nameJoined.equals(SessionAuth.getTargetUsername())) {
-				// It is the API bot
-
-				// Print to console
-				System.out.println(message);
-
-				// Return
-				return;
-			}
-
+		
 			// Create the chat style with click event
 			ChatStyle chatStyle = new ChatStyle()
 					.setChatClickEvent(new ClickEvent(

@@ -22,7 +22,7 @@ group= "com.twemyeez.picklr" // http://maven.apache.org/guides/mini/guide-naming
 archivesBaseName = "Picklr"
 
 minecraft {
-    version = "1.7.10-10.13.1.1217"
+    version = "1.8-8.0.49.1047"
     runDir = "eclipse"
 }
 

@@ -9,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
-import com.twemyeez.picklr.auth.AfkAPI;
 import com.twemyeez.picklr.config.ConfigurationHandler;
 import com.twemyeez.picklr.config.ConfigurationHandler.ConfigAttribute;
 import com.twemyeez.picklr.location.ServerLocationUtils;
@@ -29,7 +28,6 @@ public class AFKHandler {
 	 */
 	public static void setAfk(Boolean value) {
 		// Do API write
-		AfkAPI.changeAfkStatus(value);
 
 		// Get a nice readable "on" or "off" from the value
 		String status;

@@ -3,8 +3,6 @@ package com.twemyeez.picklr.location;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
-import com.twemyeez.picklr.auth.CommonAPI;
-import com.twemyeez.picklr.auth.SessionAuth;
 import com.twemyeez.picklr.config.ConfigurationHandler;
 import com.twemyeez.picklr.config.ConfigurationHandler.ConfigAttribute;
 import com.twemyeez.picklr.listener.ChatListener;
@@ -41,14 +39,6 @@ public class ServerLocationUtils {
 		 * Save the server locally for use if required
 		 */
 		currentServerName = name;
-
-		// Construct the API url
-		String url = "http://picklr.me/api/v1/setlocation.php?username="
-				+ Minecraft.getMinecraft().thePlayer.getCommandSenderName()
-				+ "&r_uuid=" + SessionAuth.getToken() + "&server=" + name;
-
-		// Write the new location to the API in a new thread to avoid lag
-		CommonAPI.carryOutAsyncApiWrite(url);
 	}
 
 	/*

@@ -6,8 +6,6 @@ import net.minecraft.client.Minecraft;
 
 import org.apache.commons.io.*;
 
-import com.twemyeez.picklr.auth.CommonAPI;
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
@@ -52,8 +50,7 @@ public class InstallManager {
 		// Now try to download the libraries
 		try {
 
-			String location = CommonAPI
-					.carryOutAsyncApiRead("http://picklr.me/api/v1/library_location.txt");
+			String location = "http://www.javazoom.net/mp3spi/sources/mp3spi1.9.5.zip";
 
 			// Define the URL
 			URL url = new URL(location);
