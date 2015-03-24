@@ -17,14 +17,14 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import com.twemyeez.picklr.Picklr;
 import com.twemyeez.picklr.config.ConfigurationHandler;
 import com.twemyeez.picklr.config.ConfigurationHandler.ConfigAttribute;
 import com.twemyeez.picklr.location.ServerLocationUtils;
 
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
 
 public class CommonEvents {
 
@@ -95,7 +95,7 @@ public class CommonEvents {
 
 			// Get the player and get their name
 			EntityPlayer Player = (EntityPlayer) event.target;
-			String name = Player.getCommandSenderName();
+			String name = Player.getName();
 
 			// Check the player is in a lobby
 			if (!ServerLocationUtils.currentServerName.contains("lobby")) {

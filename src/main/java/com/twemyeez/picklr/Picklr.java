@@ -1,15 +1,16 @@
 package com.twemyeez.picklr;
 
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import com.twemyeez.picklr.config.ConfigurationHandler;
 import com.twemyeez.picklr.utils.CommonUtils;
 import com.twemyeez.picklr.utils.UpdateChecker;
 
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+
 
 @Mod(modid = Picklr.MODID, version = Picklr.VERSION, guiFactory = "com.twemyeez.picklr.config.ConfigGuiFactory")
 public class Picklr {

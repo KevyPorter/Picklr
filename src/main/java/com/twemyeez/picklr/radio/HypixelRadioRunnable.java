@@ -25,19 +25,21 @@ public class HypixelRadioRunnable implements Runnable {
 
 		try {
 			// this is the stream URL.
-			URL url = new URL("http://knight.wavestreamer.com:1237/listen.mp3");
+			//http://stereo.wavestreamer.com:5543/;stream/1
+			//http://knight.wavestreamer.com:1237/listen.mp3
+			URL url = new URL("http://stereo.wavestreamer.com:5543/Live/listen.mp3");
 
 			// We now open a socket to that address and port
 			Socket socketWithPort = new Socket(url.getHost(), url.getPort());
 			OutputStream outputFromSocket = socketWithPort.getOutputStream();
 
 			// Send a GET request for the data
-			String req = "GET / HTTP/1.0\r\nIcy-MetaData: 1\r\nConnection: keep-alive\r\n\r\n";
+			String req = "GET / HTTP/1.0\r\nIcy-MetaData: 0\r\nConnection: keep-alive\r\n\r\n";
 			outputFromSocket.write(req.getBytes());
 			inputRaw = socketWithPort.getInputStream();
 
 			// Sleep to fill data buffer
-			Thread.sleep(500);
+			Thread.sleep(5000);
 
 			// open a buffered input stream
 			bufferedIn = new BufferedInputStream(inputRaw, 81920);

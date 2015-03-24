@@ -4,12 +4,12 @@ import com.twemyeez.picklr.config.ConfigurationHandler;
 import com.twemyeez.picklr.config.ConfigurationHandler.ConfigAttribute;
 import com.twemyeez.picklr.radio.RadioUtils;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class LocationGui extends Gui {
 	private Minecraft mc;
@@ -48,16 +48,16 @@ public class LocationGui extends Gui {
 			int scaledWidth = scaledResolution.getScaledWidth();
 			// Calculate required start X
 			int locationX = scaledWidth
-					- mc.fontRenderer
+					- mc.fontRendererObj
 							.getStringWidth(ServerLocationUtils.currentServerName);
 
 			// Draw strng
-			mc.fontRenderer.drawStringWithShadow(
+			mc.fontRendererObj.drawString(
 					ServerLocationUtils.currentServerName, locationX, 1,
 					0xffffffff);
 		} else {
 			// Otherwise, proceed to render on right
-			mc.fontRenderer.drawStringWithShadow(
+			mc.fontRendererObj.drawString(
 					ServerLocationUtils.currentServerName, 1, 1, 0xFFFFFF);
 		}
 

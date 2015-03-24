@@ -3,7 +3,6 @@ package com.twemyeez.picklr.utils;
 import java.io.IOException;
 
 import com.twemyeez.picklr.Picklr;
-import com.twemyeez.picklr.commands.BulkFriend;
 import com.twemyeez.picklr.commands.RadioToggle;
 import com.twemyeez.picklr.commands.RadioVolume;
 import com.twemyeez.picklr.config.ConfigurationHandler;
@@ -22,9 +21,8 @@ import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class CommonUtils {
 
@@ -58,9 +56,6 @@ public class CommonUtils {
 		// register the /radio command which toggles radio on and off
 		ClientCommandHandler.instance.registerCommand(new RadioToggle());
 
-		// register the /bulkfriend command which processes or denies all friend
-		// requests
-		ClientCommandHandler.instance.registerCommand(new BulkFriend());
 
 		// Register the handler for configuration changes
 		FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
@@ -80,7 +75,7 @@ public class CommonUtils {
 			if (!FMLClientHandler.instance().getClient().isSingleplayer()) {
 				// This implies they're multiplayer - therefore we will check if
 				// their server IP contains Hypixel.net
-				if (FMLClientHandler.instance().getClient().func_147104_D().serverIP
+				if (FMLClientHandler.instance().getClient().getCurrentServerData().serverIP
 						.indexOf("hypixel.net") != -1) {
 					return true;
 				}

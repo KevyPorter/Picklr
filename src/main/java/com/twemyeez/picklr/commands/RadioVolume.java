@@ -16,6 +16,7 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.InventoryEnderChest;
 import net.minecraft.inventory.InventoryLargeChest;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 
 public class RadioVolume implements ICommand {
@@ -119,9 +120,8 @@ public class RadioVolume implements ICommand {
 
 	// This takes a percentage, so tab complete really won't be that useful, so
 	// simply return null
-	@Override
-	public List addTabCompletionOptions(ICommandSender p_71516_1_,
-			String[] p_71516_2_) {
+	public List addTabCompletionOptions(ICommandSender sender,
+			String[] existing) {
 		return null;
 	}
 
@@ -135,6 +135,13 @@ public class RadioVolume implements ICommand {
 	@Override
 	public int compareTo(Object arg0) {
 		return 0;
+	}
+
+	@Override
+	public List addTabCompletionOptions(ICommandSender sender, String[] args,
+			BlockPos pos) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

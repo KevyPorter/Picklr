@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.twemyeez.picklr.afk.AFKHandler;
-import com.twemyeez.picklr.commands.BulkFriend;
 import com.twemyeez.picklr.location.ServerLocationUtils;
 import com.twemyeez.picklr.utils.CommonUtils;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
@@ -16,6 +14,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ChatListener {
 
@@ -23,7 +22,7 @@ public class ChatListener {
 	 * This enum holds the various status's that can be used for chat
 	 */
 	public enum ChatStatus {
-		READY, WHEREAMI, FRIEND_GETTING_PAGE, FRIEND_LISTING, BACKGROUND_FRIEND, TOKEN_REQUEST, FRIEND_REQUEST_PROCESSING, PARTY_INVITE
+		READY, WHEREAMI, FRIEND_GETTING_PAGE, FRIEND_LISTING, BACKGROUND_FRIEND, TOKEN_REQUEST, PARTY_INVITE
 	};
 
 	/*
@@ -59,10 +58,6 @@ public class ChatListener {
 			}
 
 	
-			if (currentStatus.contains(ChatStatus.FRIEND_REQUEST_PROCESSING)) {
-				// Fire the method for friend request bulk processing if needed
-				BulkFriend.relatedChatEventHandler(event);
-			}
 
 			if (currentStatus.contains(ChatStatus.PARTY_INVITE)) {
 				// It might be a party invite so process it

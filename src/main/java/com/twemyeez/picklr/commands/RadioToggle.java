@@ -1,11 +1,13 @@
 package com.twemyeez.picklr.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.twemyeez.picklr.radio.RadioUtils;
 
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.BlockPos;
 
 public class RadioToggle implements ICommand {
 
@@ -28,7 +30,11 @@ public class RadioToggle implements ICommand {
 	// This command has no aliases, so we will return null
 	@Override
 	public List getCommandAliases() {
-		return null;
+		ArrayList<String> aliases = new ArrayList<String>();
+		aliases.add("hpr");
+		aliases.add("rad");
+		aliases.add("radio");
+		return aliases;
 	}
 
 	// Command processing
@@ -47,9 +53,8 @@ public class RadioToggle implements ICommand {
 
 	// This takes no arguments, so there is no requirement for tab completion
 	// options.
-	@Override
-	public List addTabCompletionOptions(ICommandSender p_71516_1_,
-			String[] p_71516_2_) {
+	public List addTabCompletionOptions(ICommandSender sender,
+			String[] existing) {
 		return null;
 	}
 
@@ -64,6 +69,13 @@ public class RadioToggle implements ICommand {
 	@Override
 	public int compareTo(Object arg0) {
 		return 0;
+	}
+
+	@Override
+	public List addTabCompletionOptions(ICommandSender sender, String[] args,
+			BlockPos pos) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
