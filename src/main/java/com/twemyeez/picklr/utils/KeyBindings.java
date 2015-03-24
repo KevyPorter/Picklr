@@ -8,7 +8,6 @@ import java.util.TimerTask;
 
 import org.lwjgl.input.Keyboard;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
 import com.twemyeez.picklr.Picklr;
 import com.twemyeez.picklr.afk.AFKHandler;
 import com.twemyeez.picklr.config.ConfigurationHandler;
