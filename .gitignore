@@ -26,7 +26,8 @@ $RECYCLE.BIN/
 .LSOverride
 
 # Icon must ends with two \r.
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -47,3 +48,4 @@ gradlew.bat
 .metadata/
 .project/
 bin/
+gradlew
